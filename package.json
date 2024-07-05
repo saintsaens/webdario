@@ -1,0 +1,17 @@
+{
+  "name": "project-dario",
+  "version": "1.0.0",
+  "description": "peacock radio",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "fluent-ffmpeg": "^2.1.3"
+  }
+}

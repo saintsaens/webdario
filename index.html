@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>🦚-radio</title>
+    <style>
+        body {
+            background-color: #2c3e50;
+            color: white;
+            font-family: "Lucida Console", monospace;
+            text-align: center;
+        }
+        .toggleImg {
+            height: 200px;
+            cursor: pointer;
+            border: 1px solid #5ac395;
+            border-radius: 3%;
+        }
+
+        .toggleImg:hover {
+            opacity: 0.85;
+        }
+        .toggleImg:active {
+            border-color: #3da878; /* Slightly darker shade for click effect */
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Bienvenue sur la 🦚-radio</h1><br>
+    <img id="toggleImg" src="./musicplaying.jpg" class="toggleImg">
+    <audio id="audioPlayer" hidden>
+        <source src="/stream" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <script>
+        document.getElementById('toggleImg').addEventListener('click', function () {
+            var audio = document.getElementById('audioPlayer');
+            var img = document.getElementById('toggleImg');
+            if (audio.paused) {
+                audio.play();
+                img.src = './musicplaying.webp';
+            } else {
+                audio.pause();
+                img.src = './musicplaying.jpg';
+            }
+        });
+
+        document.getElementById('audioPlayer').addEventListener('play', function () {
+            document.getElementById('toggleImg').src = './musicplaying.webp';
+        });
+
+        document.getElementById('audioPlayer').addEventListener('pause', function () {
+            document.getElementById('toggleImg').src = './musicplaying.jpg';
+        });
+    </script>
+</body>
+
+</html>
