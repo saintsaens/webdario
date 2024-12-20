@@ -30,7 +30,7 @@
 
 <body>
     <h1>Bienvenue sur la 🦚-radio</h1><br>
-    <img id="toggleImg" src="./musicplaying.jpg" class="toggleImg">
+    <img id="toggleImg" src="./assets/images/musicplaying.jpg" class="toggleImg">
     <audio id="audioPlayer" hidden>
         <source src="/stream" type="audio/mpeg">
         Your browser does not support the audio element.
@@ -41,19 +41,19 @@
             var img = document.getElementById('toggleImg');
             if (audio.paused) {
                 audio.play();
-                img.src = './musicplaying.webp';
+                img.src = './assets/images/musicplaying.webp';
             } else {
                 audio.pause();
-                img.src = './musicplaying.jpg';
+                img.src = './assets/images/musicplaying.jpg';
             }
         });
 
         document.getElementById('audioPlayer').addEventListener('play', function () {
-            document.getElementById('toggleImg').src = './musicplaying.webp';
+            document.getElementById('toggleImg').src = './assets/images/musicplaying.webp';
         });
 
         document.getElementById('audioPlayer').addEventListener('pause', function () {
-            document.getElementById('toggleImg').src = './musicplaying.jpg';
+            document.getElementById('toggleImg').src = './assets/images/musicplaying.jpg';
         });
     </script>
 </body>
