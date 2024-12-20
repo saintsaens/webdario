@@ -15,3 +15,16 @@ export async function getTrackDuration(trackPath) {
         throw err;
     }
 }
+
+export async function getTrackName(trackPath) {
+    if (!trackPath) {
+        throw new Error('No input specified');
+    }
+    
+    try {
+        const metadata = await ffprobe(trackPath);
+        return metadata.format.tags.title || 'Unknown Title';
+    } catch (err) {
+        throw err;
+    }
+}

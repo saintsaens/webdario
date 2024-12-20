@@ -11,6 +11,7 @@
             font-family: "Lucida Console", monospace;
             text-align: center;
         }
+
         .toggleImg {
             height: 200px;
             cursor: pointer;
@@ -21,10 +22,11 @@
         .toggleImg:hover {
             opacity: 0.85;
         }
-        .toggleImg:active {
-            border-color: #3da878; /* Slightly darker shade for click effect */
-        }
 
+        .toggleImg:active {
+            border-color: #3da878;
+            /* Slightly darker shade for click effect */
+        }
     </style>
 </head>
 
@@ -55,6 +57,25 @@
         document.getElementById('audioPlayer').addEventListener('pause', function () {
             document.getElementById('toggleImg').src = './assets/images/musicplaying.jpg';
         });
+    </script>
+    <br>
+    <br>
+    <div id="now-playing">Loading...</div>
+    <br>
+    <br>
+    <audio controls autoplay>
+        <source src="/audio-stream" type="audio/mpeg">
+    </audio>
+    <script>
+        async function updateNowPlaying() {
+            const response = await fetch('/now-playing');
+            const data = await response.json();
+            document.getElementById('now-playing').textContent =
+                `${data.title || 'Unknown Title'}`;
+        }
+
+        setInterval(updateNowPlaying, 1000);
+        updateNowPlaying();
     </script>
 </body>
 

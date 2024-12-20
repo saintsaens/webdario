@@ -5,6 +5,7 @@ import { PassThrough } from 'stream';
 import express from 'express';
 import ffmpeg from 'fluent-ffmpeg';
 import { fetchTracks } from "./src/utils/tracks.js";
+import { getTrackName } from "./src/utils/ffmpegUtils.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -50,6 +51,35 @@ const getStreamAtCurrentPosition = () => {
 app.use(express.static(path.join(__dirname)));
 
 app.get('/stream', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/now-playing', async (req, res) => {
+    const now = Date.now();
+    const totalDuration = tracks.reduce((sum, track) => sum + track.duration, 0);
+    const elapsed = (now - startTime) % totalDuration;
+
+    let cumulativeDuration = 0;
+    let currentTrack;
+
+    for (const track of tracks) {
+        cumulativeDuration += track.duration;
+        if (elapsed < cumulativeDuration) {
+            currentTrack = track;
+            break;
+        }
+    }
+
+    const trackName = await getTrackName(currentTrack.path);
+
+    res.json({ 
+        title: trackName,
+        duration: currentTrack.duration,
+        elapsed: elapsed
+    });
+});
+
+app.get('/audio-stream', (req, res) => {
     const stream = getStreamAtCurrentPosition();
     res.setHeader('Content-Type', 'audio/mpeg');
     stream.pipe(res);
