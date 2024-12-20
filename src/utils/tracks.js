@@ -30,11 +30,6 @@ export const fetchTracks = async () => {
     }
 }
 
-/**
- * Get the current track stream based on elapsed time.
- * @param {number} startTime - Timestamp of when the playback started.
- * @returns {import('stream').PassThrough} - Audio stream of the current track.
- */
 export const getStreamAtCurrentPosition = (startTime) => {
     const now = Date.now();
     const totalDuration = TRACKS.reduce((sum, track) => sum + track.duration, 0);
