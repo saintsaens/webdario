@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { fetchTracks } from '../src/utils/tracks';
 import fs from 'fs';
 import path from 'path';
@@ -11,10 +11,6 @@ vi.mock('path');
 vi.mock('../src/utils/ffmpegUtils');
 
 describe('tracks', () => {
-    beforeEach(() => {
-        vi.clearAllMocks();
-    });
-
     describe('fetchTracks', () => {
         it('should handle multiple audio file formats', async () => {
             fs.readdirSync.mockReturnValue(['track1.mp3', 'track2.wav', 'track3.ogg']);
