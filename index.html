@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>🦚-radio</title>
@@ -11,72 +10,39 @@
             font-family: "Lucida Console", monospace;
             text-align: center;
         }
-
         .toggleImg {
             height: 200px;
             cursor: pointer;
             border: 1px solid #5ac395;
             border-radius: 3%;
         }
-
-        .toggleImg:hover {
-            opacity: 0.85;
-        }
-
-        .toggleImg:active {
-            border-color: #3da878;
-            /* Slightly darker shade for click effect */
-        }
+        .toggleImg:hover { opacity: 0.85; }
     </style>
 </head>
-
 <body>
     <h1>Bienvenue sur la 🦚-radio</h1><br>
     <img id="toggleImg" src="./assets/images/musicplaying.jpg" class="toggleImg">
-    <audio id="audioPlayer" hidden>
-        <source src="/stream" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    <script>
-        document.getElementById('toggleImg').addEventListener('click', function () {
-            var audio = document.getElementById('audioPlayer');
-            var img = document.getElementById('toggleImg');
-            if (audio.paused) {
-                audio.play();
-                img.src = './assets/images/musicplaying.webp';
-            } else {
-                audio.pause();
-                img.src = './assets/images/musicplaying.jpg';
-            }
-        });
-
-        document.getElementById('audioPlayer').addEventListener('play', function () {
-            document.getElementById('toggleImg').src = './assets/images/musicplaying.webp';
-        });
-
-        document.getElementById('audioPlayer').addEventListener('pause', function () {
-            document.getElementById('toggleImg').src = './assets/images/musicplaying.jpg';
-        });
-    </script>
-    <br>
-    <br>
-    <div id="now-playing">Loading...</div>
-    <br>
-    <br>
-    <audio controls autoplay>
+    <audio id="audioPlayer" controls>
         <source src="/audio-stream" type="audio/mpeg">
     </audio>
+    <div id="now-playing">Loading...</div>
+
     <script>
+        const audio = document.getElementById('audioPlayer');
+        const img = document.getElementById('toggleImg');
+
+        img.onclick = () => {
+            audio.paused ? audio.play() : audio.pause();
+            img.src = `./assets/images/musicplaying.${audio.paused ? 'jpg' : 'webp'}`;
+        };
+
         async function updateNowPlaying() {
-            const response = await fetch('/now-playing');
-            const data = await response.json();
-            document.getElementById('now-playing').textContent =
-                `${data.title || 'Unknown Title'}`;
+            const data = await fetch('/now-playing').then(r => r.json());
+            document.getElementById('now-playing').textContent = data.title || 'Unknown Title';
         }
 
         setInterval(updateNowPlaying, 1000);
         updateNowPlaying();
     </script>
 </body>
-
 </html>
