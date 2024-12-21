@@ -1,14 +1,14 @@
 import { describe, it, expect } from 'vitest';
-import { fetchTracks } from '../src/utils/tracks';
+import { fetchTracks } from '../src/tracks';
 import fs from 'fs';
 import path from 'path';
-import { getTrackDuration } from '../src/utils/ffmpegUtils';
-import { AMBIENT_OST_DIR } from '../src/config/paths';
+import { getTrackDuration } from '../src/ffmpegUtils';
+import { AMBIENT_OST_DIR } from '../src/paths';
 
 // Mock dependencies
 vi.mock('fs');
 vi.mock('path');
-vi.mock('../src/utils/ffmpegUtils');
+vi.mock('../src/ffmpegUtils');
 
 describe('tracks', () => {
     describe('fetchTracks', () => {

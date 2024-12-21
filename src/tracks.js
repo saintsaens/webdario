@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { getTrackDuration } from './ffmpegUtils.js';
-import { AMBIENT_OST_DIR } from '../config/paths.js';
-
-export const TRACKS = [];
+import { AMBIENT_OST_DIR } from './paths.js';
+import ffmpeg from 'fluent-ffmpeg';
+import { PassThrough } from 'stream';
 
 export const fetchTracks = async () => {
     try {
@@ -30,15 +30,15 @@ export const fetchTracks = async () => {
     }
 }
 
-export const getStreamAtCurrentPosition = (startTime) => {
+export const getStreamAtCurrentPosition = (tracks, startTime) => {
     const now = Date.now();
-    const totalDuration = TRACKS.reduce((sum, track) => sum + track.duration, 0);
+    const totalDuration = tracks.reduce((sum, track) => sum + track.duration, 0);
     const elapsed = (now - startTime) % totalDuration;
 
     let cumulativeDuration = 0;
     let currentTrack;
 
-    for (const track of TRACKS) {
+    for (const track of tracks) {
         cumulativeDuration += track.duration;
         if (elapsed < cumulativeDuration) {
             currentTrack = track;
