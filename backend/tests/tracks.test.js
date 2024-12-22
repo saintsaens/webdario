@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { fetchTracks } from '../src/tracks';
+import { fetchTracks } from '../services/tracks';
 import fs from 'fs';
 import path from 'path';
-import { getTrackDuration } from '../src/ffmpegUtils';
-import { AMBIENT_OST_DIR } from '../src/paths';
+import { getTrackDuration } from '../services/ffmpegService';
+import { AMBIENT_OST_DIR } from '../services/paths';
 
 // Mock dependencies
 vi.mock('fs');

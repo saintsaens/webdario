@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { getTrackDuration } from './ffmpegUtils.js';
+import { getTrackDuration } from './ffmpegService.js';
 import { AMBIENT_OST_DIR } from './paths.js';
 import ffmpeg from 'fluent-ffmpeg';
 import { PassThrough } from 'stream';

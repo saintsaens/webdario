@@ -1,6 +1,5 @@
 import { Router } from 'express';
-import { getStreamAtCurrentPosition } from '../src/tracks.js';
-import { fetchTracks } from '../src/tracks.js';
+import { fetchTracks, getStreamAtCurrentPosition } from '../services/tracks.js';
 
 export const streamRouter = Router();
 
