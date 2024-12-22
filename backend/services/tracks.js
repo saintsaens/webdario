@@ -11,14 +11,23 @@ export const fetchTracks = async () => {
         const fileNames = fs.readdirSync(AMBIENT_OST_DIR)
             .filter(file => file !== '.DS_Store');
 
+        // Create and shuffle array of paths
+        const shuffleArray = (array) => {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        };
+
         // Create array of paths
-        const filePaths = fileNames.map(file => path.join(AMBIENT_OST_DIR, file));
-        
+        const filePaths = shuffleArray(fileNames.map(file => path.join(AMBIENT_OST_DIR, file)));
+
         // Get durations in parallel
         const durations = await Promise.all(
             filePaths.map(path => getTrackDuration(path))
         );
-        
+
         // Create final tracks array
         return fileNames.map((file, index) => ({
             path: filePaths[index],
@@ -30,7 +39,7 @@ export const fetchTracks = async () => {
     }
 }
 
-export const getStreamAtCurrentPosition = (tracks, startTime) => {
+const getCurrentTrackInfo = (tracks, startTime) => {
     const now = Date.now();
     const totalDuration = tracks.reduce((sum, track) => sum + track.duration, 0);
     const elapsed = (now - startTime) % totalDuration;
@@ -47,14 +56,46 @@ export const getStreamAtCurrentPosition = (tracks, startTime) => {
     }
 
     const trackElapsed = elapsed - (cumulativeDuration - currentTrack.duration);
-    const passthrough = new PassThrough();
+    return { currentTrack, trackElapsed };
+};
 
-    ffmpeg(currentTrack.path)
-        .setStartTime(trackElapsed / 1000) // Start time in seconds
+const createTrackStream = (tracks, track, startTime, passthrough) => {
+    if (!track || !track.path) {
+        console.error('Invalid track:', track);
+        return;
+    }
+
+    console.log('Creating stream for track:', track.path);
+
+    ffmpeg(track.path)
+        .setStartTime(startTime / 1000)
         .audioCodec('libmp3lame')
         .format('mp3')
-        .on('error', (err) => console.error('Error processing track:', err))
-        .pipe(passthrough);
+        .on('error', (err) => {
+            console.error('Error processing track:', err);
+            // Try next track on error
+            const nextTrackInfo = getCurrentTrackInfo(tracks, Date.now());
+            createTrackStream(tracks, nextTrackInfo.currentTrack, 0, passthrough);
+        })
+        .on('end', () => {
+            const nextTrackInfo = getCurrentTrackInfo(tracks, Date.now());
+            createTrackStream(tracks, nextTrackInfo.currentTrack, 0, passthrough);
+        })
+        .pipe(passthrough, { end: false });
+};
 
+export const getStreamAtCurrentPosition = (tracks, startTime) => {
+    if (!tracks || !tracks.length) {
+        throw new Error('No tracks available');
+    }
+
+    const passthrough = new PassThrough();
+    const { currentTrack, trackElapsed } = getCurrentTrackInfo(tracks, startTime);
+
+    if (!currentTrack) {
+        throw new Error('Could not determine current track');
+    }
+
+    createTrackStream(tracks, currentTrack, trackElapsed, passthrough);
     return passthrough;
 };
