@@ -6,6 +6,9 @@ import mountRoutes from "./routes/index.js";
 const app = express();
 const port = 3001;
 
+// Middleware and app configuration
+app.set('trust proxy', 1);
+app.use(express.json());
 morganLoader(app);
 corsLoader(app);
 
