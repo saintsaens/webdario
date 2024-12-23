@@ -13,7 +13,7 @@ const shuffleArray = (array) => {
 
 export const fetchTracks = async () => {
     const files = fs.readdirSync(AMBIENT_OST_DIR).filter(file => file !== '.DS_Store');
-    const paths = shuffleArray(files.map(file => path.join(AMBIENT_OST_DIR, file)));
+    const paths = files.map(file => path.join(AMBIENT_OST_DIR, file));
     const durations = await Promise.all(paths.map(getTrackDuration));
     return paths.map((path, i) => ({ path, duration: durations[i] }));
 };
