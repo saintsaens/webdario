@@ -2,6 +2,7 @@ import express from 'express';
 import corsLoader from "./loaders/corsLoader.js";
 import morganLoader from "./loaders/morganLoader.js";
 import mountRoutes from "./routes/index.js";
+import { startStream } from "./services/streamHandler.js";
 
 export const port = 3001;
 const app = express();
@@ -14,6 +15,8 @@ corsLoader(app);
 
 // Mount routes
 mountRoutes(app);
+
+await startStream();
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
