@@ -1,6 +1,10 @@
-export const getCurrentTrackInfo = (tracks, startTime) => {
+import { fetchTracks } from "./trackLoader.js";
+
+export const getCurrentTrackInfo = async () => {
+    const { tracks, totalDuration } = await fetchTracks();
+
+    const startTime = new Date('2024-05-04T13:37:00Z').getTime();
     const now = Date.now();
-    const totalDuration = tracks.reduce((sum, track) => sum + track.duration, 0);
     const elapsed = (now - startTime) % totalDuration;
     
     let cumulativeDuration = 0;
