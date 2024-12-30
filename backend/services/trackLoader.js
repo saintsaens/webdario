@@ -22,6 +22,4 @@ export const createTrackListFile = async (outputFile = 'playlist.txt') => {
     // Write the content to the output file
     const filePath = path.join(PLAYLIST_DIR, outputFile);
     fs.writeFileSync(filePath, fileListContent, 'utf8');
-
-    console.log(`Track list file created: ${filePath}`);
 };
