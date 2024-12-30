@@ -3,7 +3,7 @@ import { fetchTracks } from '../services/tracks';
 import fs from 'fs';
 import path from 'path';
 import { getTrackDuration } from '../services/ffmpegService';
-import { AMBIENT_OST_DIR } from '../services/paths';
+import { TRACKS_DIR } from '../services/paths';
 
 // Mock dependencies
 vi.mock('fs');
@@ -51,7 +51,7 @@ describe('tracks', () => {
 
             await fetchTracks();
 
-            expect(path.join).toHaveBeenCalledWith(AMBIENT_OST_DIR, 'track1.mp3');
+            expect(path.join).toHaveBeenCalledWith(TRACKS_DIR, 'track1.mp3');
         });
 
         it('should fetch durations in parallel', async () => {
