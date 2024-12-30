@@ -30,3 +30,21 @@ export const getTrackName = async (trackPath) => {
         return 'Unknown Title';
     }
 }
+
+export const getTrackArtist = async (trackPath) => {
+    try {
+        const metadata = await ffprobe(trackPath);
+        const tags = metadata.format.tags || {};
+        
+        // Try different tag variations
+        const artist = tags.ARTIST || tags.artist || tags.Artist;
+        
+        if (artist) return artist;
+        
+        // Fallback to 'Unknown Artist'
+        return 'Unknown Artist';
+    } catch (err) {
+        console.error('Error getting track artist:', err);
+        return 'Unknown Artist';
+    }
+}

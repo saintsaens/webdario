@@ -1,21 +1,20 @@
 import { PassThrough } from 'stream';
 import ffmpeg from 'fluent-ffmpeg';
 import { getCurrentTrackInfo } from './trackInfo.js';
-import { getTrackName } from "./ffmpegService.js";
+import { getTrackName, getTrackArtist } from "./ffmpegService.js";
 import { fetchTracks } from './trackLoader.js';
 
 let globalPassthrough = null;
-let tracks = null;
-let startTime = null;
 
 export const startStream = async () => {
-    tracks = await fetchTracks();
-    startTime = new Date().getTime();
+    const tracks = await fetchTracks();
+    const startTime = new Date('2024-05-04T13:37:00Z').getTime();
     globalPassthrough = new PassThrough();
     
     const streamTrack = async (track, elapsed) => {
         const trackName = await getTrackName(track.path);
-        console.log(`Now playing: ${trackName}`);
+        const trackArtist = await getTrackArtist(track.path);
+        console.log(`Now playing: ${trackArtist} - ${trackName}`);
         
         ffmpeg(track.path)
             .setStartTime(elapsed / 1000)
