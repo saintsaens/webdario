@@ -1,33 +1,38 @@
 import { PassThrough } from 'stream';
 import ffmpeg from 'fluent-ffmpeg';
-import { getCurrentTrackInfo } from './trackInfo.js';
 import { getTrackName, getTrackArtist } from "./ffmpegService.js";
-import { fetchTracks } from './trackLoader.js';
+import { createTrackListFile } from './trackLoader.js';
+import { getCurrentTrackInfo } from './trackInfo.js';
 
 let globalPassthrough = null;
 
+const logTrackInfo = async (track) => {
+    const trackName = await getTrackName(track.path);
+    const trackArtist = await getTrackArtist(track.path);
+    console.log(`Now playing: ${trackArtist} - ${trackName}`);
+};
+
+const setupFFmpeg = (track, elapsed) => {
+    return ffmpeg(track.path)
+        .setStartTime(elapsed / 1000)
+        .audioCodec('libmp3lame')
+        .format('mp3')
+        .on('error', (err) => {
+            console.error('FFmpeg error:', err);
+        });
+};
+
+const streamTrack = async (track, elapsed) => {
+    await logTrackInfo(track);
+    const ffmpegCommand = setupFFmpeg(track, elapsed);
+    ffmpegCommand.pipe(globalPassthrough, { end: false });
+};
+
 export const startStream = async () => {
-    const tracks = await fetchTracks();
-    const startTime = new Date('2024-05-04T13:37:00Z').getTime();
     globalPassthrough = new PassThrough();
-    
-    const streamTrack = async (track, elapsed) => {
-        const trackName = await getTrackName(track.path);
-        const trackArtist = await getTrackArtist(track.path);
-        console.log(`Now playing: ${trackArtist} - ${trackName}`);
-        
-        ffmpeg(track.path)
-            .setStartTime(elapsed / 1000)
-            .audioCodec('libmp3lame')
-            .format('mp3')
-            .on('end', () => {
-                const next = getCurrentTrackInfo(tracks, startTime);
-                streamTrack(next.currentTrack, 0);
-            })
-            .pipe(globalPassthrough, { end: false });
-    };
-    
-    const { currentTrack, trackElapsed } = getCurrentTrackInfo(tracks, startTime);
+
+    createTrackListFile();
+    const { currentTrack, trackElapsed } = await getCurrentTrackInfo();
     await streamTrack(currentTrack, trackElapsed);
 };
 
