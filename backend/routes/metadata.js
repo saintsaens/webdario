@@ -3,5 +3,5 @@ import { getMetadata, updateMetadata } from '../controllers/metadataController.j
 
 export const metadataRouter = Router();
 
-metadataRouter.get('/:trackPath', getMetadata);
-metadataRouter.put('/:trackPath', updateMetadata);
+metadataRouter.get('/', getMetadata);
+metadataRouter.put('/', updateMetadata);

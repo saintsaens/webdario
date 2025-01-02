@@ -59,7 +59,7 @@ const Stream = () => {
   return (
     <div className="stream">
       <audio ref={audioRef}>
-        <source src="http://localhost:3001/" type="audio/mpeg" />
+        <source src="http://localhost:3001/api/" type="audio/mpeg" />
         Your browser does not support the audio element.
       </audio>
       <PlayButton 
