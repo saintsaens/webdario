@@ -1,6 +1,10 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 
 const PlayButton = forwardRef(({ isPlaying, isMuted, autoplayFailed, onPlay, onMuteToggle }, ref) => {
+  useEffect(() => {
+    document.body.classList.toggle('muted', isMuted);
+  }, [isMuted]);
+
   const handleClick = () => {
     if (!isPlaying) {
       onPlay();
