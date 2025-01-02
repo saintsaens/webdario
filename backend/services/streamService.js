@@ -3,7 +3,6 @@ import ffmpeg from 'fluent-ffmpeg';
 import { createTrackListFile } from './trackLoader.js';
 import { generateStartTime } from "../utils/durations.js";
 import { initializeStream, getStream } from '../repositories/streamRepository.js';
-import { getTrackMetadata } from '../repositories/metadataRepository.js';
 
 let globalPassthrough = null;
 
