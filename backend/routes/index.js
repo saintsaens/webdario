@@ -1,6 +1,7 @@
 import { streamRouter } from './stream.js';
+import { metadataRouter } from './metadata.js';
 
-const mountRoutes= (app) => {
+const mountRoutes = (app) => {
     app.use('/', streamRouter);
 }
 
