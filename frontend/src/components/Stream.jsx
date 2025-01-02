@@ -3,8 +3,10 @@ import PlayButton from './PlayButton';
 
 const Stream = () => {
   const audioRef = useRef(null);
+  const buttonRef = useRef(null);
   const [autoplayFailed, setAutoplayFailed] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -15,12 +17,26 @@ const Stream = () => {
           setAutoplayFailed(false);
           setIsPlaying(true);
         }).catch(error => {
-          console.error('Playback failed:', error);
+          if (error.name === 'NotAllowedError') {
+          } else {
+            console.error('Playback failed:', error);
+          }
           setAutoplayFailed(true);
           setIsPlaying(false);
         });
       }
     }
+  }, []);
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key.toLowerCase() === 'k') {
+        buttonRef.current?.click();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+    return () => document.removeEventListener('keydown', handleKeyPress);
   }, []);
 
   const handlePlay = () => {
@@ -33,6 +49,13 @@ const Stream = () => {
     }
   };
 
+  const handleMuteToggle = () => {
+    if (audioRef.current) {
+      audioRef.current.muted = !audioRef.current.muted;
+      setIsMuted(!isMuted);
+    }
+  };
+
   return (
     <div className="stream">
       <audio ref={audioRef}>
@@ -40,9 +63,12 @@ const Stream = () => {
         Your browser does not support the audio element.
       </audio>
       <PlayButton 
+        ref={buttonRef}
         isPlaying={isPlaying}
+        isMuted={isMuted}
         autoplayFailed={autoplayFailed}
         onPlay={handlePlay}
+        onMuteToggle={handleMuteToggle}
       />
     </div>
   );

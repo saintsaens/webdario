@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
-const PlayButton = ({ isPlaying, autoplayFailed, onPlay }) => {
+const PlayButton = forwardRef(({ isPlaying, isMuted, autoplayFailed, onPlay, onMuteToggle }, ref) => {
+  const handleClick = () => {
+    if (!isPlaying) {
+      onPlay();
+    } else {
+      onMuteToggle();
+    }
+  };
+
+  const getButtonText = () => {
+    if (!isPlaying) {
+      return 'Unmute (K)';
+    }
+    return isMuted ? 'Unmute (K)' : 'Mute (K)';
+  };
+
   return (
     <div className="play-controls">
-      {autoplayFailed && !isPlaying && (
-        <button onClick={onPlay}>Play</button>
-      )}
-      {isPlaying && <div className="playing-indicator">Playing…</div>}
+      <button ref={ref} onClick={handleClick}>{getButtonText()}</button>
     </div>
   );
-};
+});
 
 export default PlayButton;
