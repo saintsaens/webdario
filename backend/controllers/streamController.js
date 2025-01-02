@@ -1,4 +1,4 @@
-import { getGlobalStream } from '../services/streamHandler.js';
+import { getGlobalStream } from '../services/streamService.js';
 
 export const handleStreamRequest = (req, res) => {
     try {

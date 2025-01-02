@@ -2,7 +2,7 @@ import express from 'express';
 import corsLoader from "./loaders/corsLoader.js";
 import morganLoader from "./loaders/morganLoader.js";
 import mountRoutes from "./routes/index.js";
-import { startStream } from "./services/streamHandler.js";
+import { startStream } from "./services/streamService.js";
 
 export const port = 3001;
 const app = express();
