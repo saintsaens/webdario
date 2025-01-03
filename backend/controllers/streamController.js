@@ -1,8 +1,8 @@
-import { getGlobalStream } from '../services/streamService.js';
+import * as streamService from '../services/streamService.js';
 
 export const getLofiStream = (req, res) => {
     try {
-        const stream = getGlobalStream();
+        const stream = streamService.getLofiStream();
         res.setHeader('Content-Type', 'audio/mpeg');
         stream.pipe(res);
     } catch (error) {
@@ -12,7 +12,7 @@ export const getLofiStream = (req, res) => {
 
 export const getCoudrierStream = (req, res) => {
     try {
-        const stream = getGlobalStream();
+        const stream = streamService.getCoudrierStream();
         res.setHeader('Content-Type', 'audio/mpeg');
         stream.pipe(res);
     } catch (error) {
