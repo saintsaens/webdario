@@ -5,7 +5,7 @@ export const getTrackMetadata = () => {
     };
 };
 
-export const updateMetadataTrackMetadata = () => {
+export const updateTrackMetadata = () => {
     return {
         name: "Name",
         artist: "Artist",
