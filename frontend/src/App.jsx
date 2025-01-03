@@ -7,8 +7,6 @@ import './styles/style.css';
 function App() {
     return (
         <>
-            <Clock />
-            <TrackMetadata />
             <Stream />
         </>
     );
