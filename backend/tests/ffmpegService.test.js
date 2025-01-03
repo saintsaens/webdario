@@ -1,75 +1,70 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { setupFFmpeg } from '../services/ffmpegService.js';
 import ffmpeg from 'fluent-ffmpeg';
-import { getTrackDuration, getTrackName } from '../services/ffmpegService';
+import { PLAYLIST_DIR } from '../services/paths.js';
 
-// Mock dependencies
+// Mock fluent-ffmpeg
 vi.mock('fluent-ffmpeg', () => ({
-    default: {
-        ffprobe: vi.fn()
-    }
+    default: vi.fn()
 }));
 
-describe('ffmpegUtils', () => {
-    describe('getTrackDuration', () => {
-        it('should return duration in milliseconds', async () => {
-            ffmpeg.ffprobe.mockImplementation((path, callback) => {
-                callback(null, {
-                    format: {
-                        duration: 180.5
-                    }
-                });
-            });
+let mockCommand;
 
-            const duration = await getTrackDuration('test.mp3');
-            expect(duration).toBe(180500);
-        });
+beforeEach(() => {
+    // Create mock chain methods
+    mockCommand = {
+        input: vi.fn().mockReturnThis(),
+        inputOptions: vi.fn().mockReturnThis(),
+        setStartTime: vi.fn().mockReturnThis(),
+        audioCodec: vi.fn().mockReturnThis(),
+        format: vi.fn().mockReturnThis(),
+        on: vi.fn().mockReturnThis()
+    };
 
-        it('should handle ffprobe errors', async () => {
-            ffmpeg.ffprobe.mockImplementation((path, callback) => {
-                callback(new Error('ffprobe failed'), null);
-            });
+    // Make ffmpeg() return our mock command
+    ffmpeg.mockReturnValue(mockCommand);
+});
 
-            await expect(getTrackDuration('test.mp3'))
-                .rejects.toThrow('ffprobe failed');
-        });
+describe('setupFFmpeg', () => {
+    it('should create ffmpeg command with correct default parameters', () => {
+        const startTime = 0;
+        const playlist = 'test-playlist.txt';
+
+        setupFFmpeg(startTime, playlist);
+
+        expect(ffmpeg).toHaveBeenCalled();
+        expect(mockCommand.input).toHaveBeenCalledWith(`${PLAYLIST_DIR}/${playlist}`);
+        expect(mockCommand.inputOptions).toHaveBeenCalledWith(['-f concat', '-safe 0', '-stream_loop -1']);
+        expect(mockCommand.setStartTime).toHaveBeenCalledWith(0);
+        expect(mockCommand.audioCodec).toHaveBeenCalledWith('libmp3lame');
+        expect(mockCommand.format).toHaveBeenCalledWith('mp3');
+        expect(mockCommand.on).toHaveBeenCalledWith('error', expect.any(Function));
     });
 
-    describe('getTrackName', () => {
-        it('should return track title from metadata', async () => {
-            ffmpeg.ffprobe.mockImplementation((path, callback) => {
-                callback(null, {
-                    format: {
-                        tags: {
-                            title: 'Test Track'
-                        }
-                    }
-                });
-            });
+    it('should handle negative startTime by setting it to 0', () => {
+        const startTime = -100;
+        const playlist = 'test-playlist.txt';
 
-            const title = await getTrackName('test.mp3');
-            expect(title).toBe('Test Track');
-        });
+        setupFFmpeg(startTime, playlist);
 
-        it('should return "Unknown Title" when no title tag exists', async () => {
-            ffmpeg.ffprobe.mockImplementation((path, callback) => {
-                callback(null, {
-                    format: {
-                        tags: {}
-                    }
-                });
-            });
+        expect(mockCommand.setStartTime).toHaveBeenCalledWith(0);
+    });
 
-            const title = await getTrackName('test.mp3');
-            expect(title).toBe('Unknown Title');
-        });
+    it('should handle NaN startTime by setting it to 0', () => {
+        const startTime = NaN;
+        const playlist = 'test-playlist.txt';
 
-        it('should handle ffprobe errors', async () => {
-            ffmpeg.ffprobe.mockImplementation((path, callback) => {
-                callback(new Error('ffprobe failed'), null);
-            });
+        setupFFmpeg(startTime, playlist);
 
-            await expect(getTrackName('test.mp3'))
-                .rejects.toThrow('ffprobe failed');
-        });
+        expect(mockCommand.setStartTime).toHaveBeenCalledWith(0);
+    });
+
+    it('should convert startTime from milliseconds to seconds', () => {
+        const startTime = 5000; // 5000ms = 5s
+        const playlist = 'test-playlist.txt';
+
+        setupFFmpeg(startTime, playlist);
+
+        expect(mockCommand.setStartTime).toHaveBeenCalledWith(5);
     });
 });
