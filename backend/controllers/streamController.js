@@ -6,7 +6,7 @@ export const getLofiStream = (req, res) => {
         res.setHeader('Content-Type', 'audio/mpeg');
         stream.pipe(res);
     } catch (error) {
-        res.status(500).send('Stream not available');
+        res.status(500).send('Lofi stream not available');
     }
 };
 
@@ -16,6 +16,6 @@ export const getCoudrierStream = (req, res) => {
         res.setHeader('Content-Type', 'audio/mpeg');
         stream.pipe(res);
     } catch (error) {
-        res.status(500).send('Stream not available');
+        res.status(500).send('Coudrier stream not available');
     }
 };
