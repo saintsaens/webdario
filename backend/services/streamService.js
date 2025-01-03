@@ -1,19 +1,41 @@
-import { PassThrough } from 'stream';
-import ffmpeg from 'fluent-ffmpeg';
-import { createTrackListFile } from './trackLoader.js';
+import { PassThrough } from "stream";
 import { generateStartTime } from "../utils/durations.js";
-import * as streamRepository from '../repositories/streamRepository.js';
+import * as ffmpegService from './ffmpegService.js';
+import * as trackListService from './trackListService.js';
 
-export const startStream = async () => {
-    createTrackListFile();
+let lofiPassthrough = null;
+let coudrierPassthrough = null;
+
+const startLofiStream = async (startTime) => {
+    const playlist = await trackListService.createTrackListFile("lofi");
+    lofiPassthrough = new PassThrough();
+    const ffmpegCommand = ffmpegService.setupFFmpeg(startTime, playlist);
+    ffmpegCommand.pipe(lofiPassthrough, { end: false });
+};
+
+const startCoudrierStream = async (startTime) => {
+    const playlist = await trackListService.createTrackListFile("coudrier");
+    coudrierPassthrough = new PassThrough();
+    const ffmpegCommand = ffmpegService.setupFFmpeg(startTime, playlist);
+    ffmpegCommand.pipe(coudrierPassthrough, { end: false });
+};
+
+export const startStreams = async () => {
     const startTime = await generateStartTime();
-    await streamRepository.initializeStream(startTime);
+    await startLofiStream(startTime);
+    await startCoudrierStream(startTime);
 };
 
 export const getCoudrierStream = () => {
-    return streamRepository.getStream();
+    if (!coudrierPassthrough) {
+        throw new Error('Coudrier stream not initialized');
+    }
+    return coudrierPassthrough;
 };
 
 export const getLofiStream = () => {
-    return streamRepository.getStream();
+    if (!lofiPassthrough) {
+        throw new Error('Lofi stream not initialized');
+    }
+    return lofiPassthrough;
 };

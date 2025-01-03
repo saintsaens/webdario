@@ -1,50 +1,23 @@
-import path from 'path';
+import { PassThrough } from 'stream';
 import ffmpeg from 'fluent-ffmpeg';
-import { promisify } from 'util';
+import { PLAYLIST_DIR } from "./paths.js";
 
-const ffprobe = promisify(ffmpeg.ffprobe);
+let globalPassthrough = null;
 
-export const getTrackDuration = async (trackPath) => {
-    try {
-        const metadata = await ffprobe(trackPath);
-        return metadata.format.duration * 1000; // duration in milliseconds
-    } catch (err) {
-        throw err;
+export const setupFFmpeg = (startTime, playlist) => {
+    if (isNaN(startTime) || startTime < 0) {
+        startTime = 0;
     }
-}
 
-export const getTrackName = async (trackPath) => {
-    try {
-        const metadata = await ffprobe(trackPath);
-        const tags = metadata.format.tags || {};
-        
-        // Try different tag variations
-        const title = tags.TITLE || tags.title || tags.Title;
-        
-        if (title) return title;
-        
-        // Fallback to filename without extension
-        return path.basename(trackPath, path.extname(trackPath));
-    } catch (err) {
-        console.error('Error getting track name:', err);
-        return 'Unknown Title';
-    }
-}
+    const command = ffmpeg()
+        .input(`${PLAYLIST_DIR}/${playlist}`)
+        .inputOptions(['-f concat', '-safe 0', '-stream_loop -1'])
+        .setStartTime(startTime / 1000)
+        .audioCodec('libmp3lame')
+        .format('mp3')
+        .on('error', (err) => {
+            console.error('FFmpeg error:', err.message);
+        });
 
-export const getTrackArtist = async (trackPath) => {
-    try {
-        const metadata = await ffprobe(trackPath);
-        const tags = metadata.format.tags || {};
-        
-        // Try different tag variations
-        const artist = tags.ARTIST || tags.artist || tags.Artist;
-        
-        if (artist) return artist;
-        
-        // Fallback to 'Unknown Artist'
-        return 'Unknown Artist';
-    } catch (err) {
-        console.error('Error getting track artist:', err);
-        return 'Unknown Artist';
-    }
-}
+        return command;
+};
