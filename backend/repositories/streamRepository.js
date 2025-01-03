@@ -9,15 +9,17 @@ const setupFFmpeg = (elapsed) => {
         elapsed = 0;
     }
 
-    return ffmpeg()
+    const ffmpegCommand = ffmpeg()
         .input(`${PLAYLIST_DIR}/playlist.txt`)
-        .inputOptions(['-f concat', '-safe 0'])
+        .inputOptions(['-f concat', '-safe 0', '-stream_loop -1'])
         .setStartTime(elapsed / 1000)
         .audioCodec('libmp3lame')
         .format('mp3')
         .on('error', (err) => {
             console.error('FFmpeg error:', err.message);
         });
+
+        return ffmpegCommand;
 };
 
 export const initializeStream = async (elapsed) => {
