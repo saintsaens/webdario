@@ -3,8 +3,11 @@ import corsLoader from "./loaders/corsLoader.js";
 import morganLoader from "./loaders/morganLoader.js";
 import mountRoutes from "./routes/index.js";
 import { startStream } from "./services/streamService.js";
+import dotenv from 'dotenv';
 
-export const port = 3001;
+dotenv.config();
+
+export const port = process.env.PORT;
 const app = express();
 
 // Middleware and app configuration
