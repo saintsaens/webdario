@@ -1,8 +1,8 @@
 import React, { forwardRef, useEffect } from 'react';
 
-const PlayButton = forwardRef(({ isPlaying, isMuted, autoplayFailed, onPlay, onMuteToggle }, ref) => {
+const MuteButton = forwardRef(({ isPlaying, isMuted, autoplayFailed, onPlay, onMuteToggle }, ref) => {
   useEffect(() => {
-    document.body.classList.toggle('muted', isMuted);
+    document.querySelector(".mute-button").classList.toggle('muted', isMuted);
   }, [isMuted]);
 
   const handleClick = () => {
@@ -21,10 +21,10 @@ const PlayButton = forwardRef(({ isPlaying, isMuted, autoplayFailed, onPlay, onM
   };
 
   return (
-    <div className="play-controls">
+    <div className="mute-button">
       <button ref={ref} onClick={handleClick}>{getButtonText()}</button>
     </div>
   );
 });
 
-export default PlayButton;
+export default MuteButton;

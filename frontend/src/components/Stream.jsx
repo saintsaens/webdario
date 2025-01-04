@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import PlayButton from './PlayButton';
+import MuteButton from './MuteButton';
 
 const Stream = () => {
   const audioRef = useRef(null);
@@ -62,7 +62,7 @@ const Stream = () => {
         <source src="http://localhost:3001/api/" type="audio/mpeg" />
         Your browser does not support the audio element.
       </audio>
-      <PlayButton 
+      <MuteButton 
         ref={buttonRef}
         isPlaying={isPlaying}
         isMuted={isMuted}
