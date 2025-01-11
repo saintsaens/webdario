@@ -1,16 +1,13 @@
 import React from 'react';
-import TrackMetadata from './components/TrackMetadata';
-import Stream from './components/Stream';
-import Clock from './components/Clock';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from './components/AppRoutes';
 import './styles/style.css';
-import About from "./components/About";
 
 function App() {
     return (
-        <>
-            <Stream />
-            <About />
-        </>
+        <Router>
+            <AppRoutes />
+        </Router>
     );
 }
 

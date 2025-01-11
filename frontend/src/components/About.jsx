@@ -1,10 +1,14 @@
 import React from 'react';
 
 const About = () => {
+  const handleClick = () => {
+    window.open('https://github.com/saintsaens/webdario', '_blank', 'noopener,noreferrer');
+  };
+
   return (
-    <a href="https://github.com/saintsaens/webdario" className="about-link" target="_blank" rel="noopener noreferrer">
+    <button className="about-button" onClick={handleClick}>
       About
-    </a>
+    </button>
   );
 };
 
