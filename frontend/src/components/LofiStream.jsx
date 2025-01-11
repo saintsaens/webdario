@@ -4,7 +4,7 @@ import Stream from './Stream';
 const LofiStream = () => {
     return (
         <>
-            <Stream />
+            <Stream path="lofi" />
             <h1>lofi</h1>
         </>
     );

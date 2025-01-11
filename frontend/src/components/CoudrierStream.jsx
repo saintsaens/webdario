@@ -1,13 +1,13 @@
 import React from 'react';
 import Stream from './Stream';
 
-const LofiStream = () => {
+const CoudrierStream = () => {
     return (
         <>
-            <Stream />
+            <Stream path="coudrier" />
             <h1>coudrier</h1>
         </>
     );
 };
 
-export default LofiStream;
+export default CoudrierStream;
