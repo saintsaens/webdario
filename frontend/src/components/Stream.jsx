@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import MuteButton from './MuteButton';
 
+const backend_url = import.meta.env.VITE_BACKEND_URL;
+
 const Stream = ({ path }) => {
   const audioRef = useRef(null);
   const buttonRef = useRef(null);
@@ -59,7 +61,7 @@ const Stream = ({ path }) => {
   return (
     <div className="stream">
       <audio ref={audioRef}>
-        <source src={`http://localhost:3001/api/${path}`} type="audio/mpeg" />
+        <source src={`${backend_url}/${path}`} type="audio/mpeg" />
         Your browser does not support the audio element.
       </audio>
       <MuteButton 

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
+const backend_url = import.meta.env.VITE_BACKEND_URL;
+
 const TrackMetadata = () => {
   const [metadata, setMetadata] = useState(null);
 
   useEffect(() => {
     const fetchMetadata = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/metadata');
+        const response = await fetch(`${backend_url}/metadata`);
         const data = await response.json();
         console.log(data);
         setMetadata(data);
