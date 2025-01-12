@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import * as metadataRepository from '../repositories/metadataRepository.js';
-import { getTrackMetadata, updateTrackMetadata } from '../services/metadataService';
+import * as metadataRepository from '../../repositories/metadataRepository.js';
+import { getTrackMetadata, updateTrackMetadata } from '../../services/metadataService.js';
 
 // Mock the repository
 vi.mock('../repositories/metadataRepository.js', () => ({

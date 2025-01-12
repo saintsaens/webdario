@@ -1,23 +1,32 @@
-import { PassThrough } from 'stream';
 import ffmpeg from 'fluent-ffmpeg';
-import { PLAYLIST_DIR } from "./paths.js";
+import { PassThrough } from 'stream';
 
-let globalPassthrough = null;
+let currentTrackIndex = 0;
 
-export const setupFFmpeg = (startTime, playlist) => {
-    if (isNaN(startTime) || startTime < 0) {
-        startTime = 0;
-    }
+export const setupFFmpeg = (playlist) => {
+    const passthrough = new PassThrough();
 
-    const command = ffmpeg()
-        .input(`${PLAYLIST_DIR}/${playlist}`)
-        .inputOptions(['-f concat', '-safe 0', '-stream_loop -1'])
-        .setStartTime(startTime / 1000)
-        .audioCodec('libmp3lame')
-        .format('mp3')
-        .on('error', (err) => {
-            console.error('FFmpeg error:', err.message);
-        });
+    const playTrack = (index) => {
+        if (index >= playlist.length) {
+            index = 0;
+        }
 
-        return command;
+        const command = ffmpeg()
+            .input(playlist[index])
+            .audioCodec('libmp3lame')
+            .format('mp3')
+            .on('end', () => {
+                playTrack(index + 1);
+            })
+            .on('error', (err) => {
+                console.error('FFmpeg error:', err.message);
+                playTrack(index + 1);
+            });
+
+        command.pipe(passthrough, { end: false });
+    };
+
+    playTrack(currentTrackIndex);
+
+    return passthrough;
 };

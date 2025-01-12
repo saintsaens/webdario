@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import ffmpeg from 'fluent-ffmpeg';
-import { getTrackDuration, getTrackName, getTrackArtist } from '../services/ffprobeService';
+import { getTrackDuration, getTrackName, getTrackArtist } from '../../services/ffprobeService';
 
 // Mock dependencies
 vi.mock('fluent-ffmpeg', () => ({

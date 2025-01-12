@@ -1,29 +1,23 @@
-import { PassThrough } from "stream";
-import { generateStartTime } from "../utils/durations.js";
+import { PassThrough } from 'stream';
 import * as ffmpegService from './ffmpegService.js';
-import * as trackListService from './trackListService.js';
+import * as playlistService from './playlistService.js';
 
 let lofiPassthrough = null;
 let coudrierPassthrough = null;
 
-const startLofiStream = async (startTime) => {
-    const playlist = await trackListService.createTrackListFile("lofi");
-    lofiPassthrough = new PassThrough();
-    const ffmpegCommand = ffmpegService.setupFFmpeg(startTime, playlist);
-    ffmpegCommand.pipe(lofiPassthrough, { end: false });
+const startLofiStream = async () => {
+    const playlist = await playlistService.createPlaylist("lofi");
+    lofiPassthrough = ffmpegService.setupFFmpeg(playlist);
 };
 
-const startCoudrierStream = async (startTime) => {
-    const playlist = await trackListService.createTrackListFile("coudrier");
-    coudrierPassthrough = new PassThrough();
-    const ffmpegCommand = ffmpegService.setupFFmpeg(startTime, playlist);
-    ffmpegCommand.pipe(coudrierPassthrough, { end: false });
+const startCoudrierStream = async () => {
+    const playlist = await playlistService.createPlaylist("coudrier");
+    coudrierPassthrough = ffmpegService.setupFFmpeg(playlist);
 };
 
 export const startStreams = async () => {
-    const startTime = await generateStartTime();
-    await startLofiStream(startTime);
-    await startCoudrierStream(startTime);
+    await startCoudrierStream();
+    await startLofiStream();
 };
 
 export const getCoudrierStream = () => {

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { setupFFmpeg } from '../services/ffmpegService.js';
+import { setupFFmpeg } from '../../services/ffmpegService.js';
 import ffmpeg from 'fluent-ffmpeg';
-import { PLAYLIST_DIR } from '../services/paths.js';
+import { PLAYLIST_DIR } from '../../services/paths.js';
 
 // Mock fluent-ffmpeg
 vi.mock('fluent-ffmpeg', () => ({
