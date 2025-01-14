@@ -1,35 +1,30 @@
-import { PassThrough } from 'stream';
-import * as ffmpegService from './ffmpegService.js';
+import * as mpdService from './mpdService.js';
 import * as playlistService from './playlistService.js';
 
-let lofiPassthrough = null;
-let coudrierPassthrough = null;
+let coudrierStreamingPlaylist = null;
+let lofiStreamingPlaylist = null;
 
-const startLofiStream = async () => {
-    const playlist = await playlistService.createPlaylist("lofi");
-    lofiPassthrough = ffmpegService.setupFFmpeg(playlist);
-};
-
-const startCoudrierStream = async () => {
-    const playlist = await playlistService.createPlaylist("coudrier");
-    coudrierPassthrough = ffmpegService.setupFFmpeg(playlist);
+const startStream = async (channel) => {
+    const tracklist = await playlistService.createPlaylist(channel);
+    const streamingPlaylist = await mpdService.generateUnifiedMPD(tracklist, channel);
+    return streamingPlaylist;
 };
 
 export const startStreams = async () => {
-    await startCoudrierStream();
-    await startLofiStream();
+    // coudrierStreamingPlaylist = await startStream("coudrier");
+    lofiStreamingPlaylist = await startStream("lofi");
 };
 
 export const getCoudrierStream = () => {
-    if (!coudrierPassthrough) {
+    if (!coudrierStreamingPlaylist) {
         throw new Error('Coudrier stream not initialized');
     }
-    return coudrierPassthrough;
+    return coudrierStreamingPlaylist;
 };
 
 export const getLofiStream = () => {
-    if (!lofiPassthrough) {
+    if (!lofiStreamingPlaylist) {
         throw new Error('Lofi stream not initialized');
     }
-    return lofiPassthrough;
+    return lofiStreamingPlaylist;
 };
