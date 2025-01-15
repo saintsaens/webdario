@@ -14,3 +14,8 @@ export const uploadSegment = async (segmentPath) => {
 
     return uploadedSegmentName;
 };
+
+export const getSegmentStream = async (segmentName) => {
+    const segmentStream = await segmentsRepository.getSegment(segmentName);
+    return segmentStream;
+};

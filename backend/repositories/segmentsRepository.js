@@ -11,3 +11,13 @@ export const uploadSegment = async (segmentStream, segmentName) => {
         throw new Error(`Failed to upload segment: ${error.message}`);
     }
 };
+
+export const getSegment = async (segmentName) => {
+    const segmentPath = `${process.env.MINIO_LOFI_SEGMENTS_PATH}/${segmentName}`;
+    try {
+        const dataStream = await minioClient.getObject(bucket, segmentPath);
+        return dataStream; // This returns the readable stream of the segment
+    } catch (error) {
+        throw new Error(`Failed to retrieve segment: ${error.message}`);
+    }
+};
