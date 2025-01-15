@@ -1,17 +1,18 @@
 import * as radioService from '../services/radioService.js';
+import * as mpdService from "../services/mpdService.js"
 
-export const getLofiStream = (req, res) => {
+export const getLofiStream = async (req, res) => {
     try {
-        const channel = process.env.LOFI_CHANNEL_NAME;
+        const channelName = process.env.LOFI_CHANNEL_NAME;
 
-        const streamPath = radioService.getChannel(channel);
+        const channelStream = await mpdService.getMpdStream(channelName);
 
         res.setHeader('Content-Type', 'application/dash+xml');
 
-        streamPath.pipe(res);
-        streamPath.on('error', (err) => {
+        channelStream.pipe(res);
+        channelStream.on('error', (err) => {
             console.error('Error streaming file:', err.message);
-            res.status(500).send('Error streaming lofi file');
+            res.status(500).send('Error streaming mpd file');
         });
     } catch (error) {
         console.error('Error retrieving lofi stream:', error.message);

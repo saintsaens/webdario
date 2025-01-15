@@ -1,6 +1,7 @@
 import fs from 'fs';
 import xml2js from 'xml2js';
 import * as trackEncodingService from './trackEncodingService.js';
+import * as mpdRepository from "../repositories/mpdRepository.js"
 import { encodeTracks } from "./trackEncodingService.js";
 
 export const extractDurationFromSingleTrackMpd = async (mpdPath) => {
@@ -83,4 +84,22 @@ const createInitializationSegmentRoute = (trackIndex) => {
 
 const createMediaSegmentRoute = (trackIndex) => {
     return `${process.env.BACKEND_URL}/api/segment/track${trackIndex}_$Number$.m4s`;
+};
+
+export const uploadMpd = async (mpdPath) => {
+    if (!fs.existsSync(mpdPath)) {
+        throw new Error(`File not found at path: ${mpdPath}`);
+    }
+
+    const mpdStream = fs.createReadStream(mpdPath);
+    const mpdName = path.basename(mpdPath);
+
+    const uploadedMpdName = await mpdRepository.uploadMpd(mpdStream, mpdName);
+
+    return uploadedMpdName;
+};
+
+export const getMpdStream = async (mpdName) => {
+    const mpdStream = await mpdRepository.getMpd(mpdName);
+    return mpdStream;
 };

@@ -3,5 +3,5 @@ import { getCoudrierStream, getLofiStream } from '../controllers/streamControlle
 
 export const streamRouter = Router();
 
-streamRouter.get('/coudrier', getCoudrierStream);
 streamRouter.get('/lofi', getLofiStream);
+streamRouter.get('/coudrier', getCoudrierStream);
