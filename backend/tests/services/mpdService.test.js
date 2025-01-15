@@ -1,10 +1,10 @@
 import { describe, it } from "vitest";
-import { extractMediaPresentationDuration } from "../../services/mpdService.js";
+import { extractDurationFromSingleTrackMpd } from "../../services/mpdService.js";
 import fs from "fs";
 
 vi.mock("fs");
 
-describe('extractMediaPresentationDuration', () => {
+describe('extractDurationFromSingleTrackMpd', () => {
     it('should return the media presentation duration from an MPD file', async () => {
         const mpdContent = `<?xml version="1.0" encoding="utf-8"?>
         <MPD xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -27,7 +27,7 @@ describe('extractMediaPresentationDuration', () => {
         fs.readFileSync.mockReturnValue(mpdContent);
         const mpdPath = 'test.mpd';
         
-        const duration = await extractMediaPresentationDuration(mpdPath);
+        const duration = await extractDurationFromSingleTrackMpd(mpdPath);
         
         expect(duration).toBe('PT2M12.8S');
     });

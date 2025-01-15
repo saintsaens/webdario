@@ -10,7 +10,7 @@ export const getSegment = async (req, res) => {
 
         const segmentStream = await segmentsService.getSegmentStream(segmentName)
 
-        res.setHeader('Content-Type', 'audio/mp4');  // For .m4s segments
+        res.setHeader('Content-Type', 'audio/mp4');  // For .m4s and .mp4 segments
 
         segmentStream.pipe(res);
         segmentStream.on('error', (err) => {

@@ -12,8 +12,6 @@ describe("radioService", () => {
         "track1",
         "track2",
         "track3",
-        "track4",
-        "track5",
     ];
     const mockUnifiedMPDPath = "/public/lofi/unified.mpd";
     const mockRadio = { lofi: mockUnifiedMPDPath };

@@ -1,8 +1,15 @@
+import fs from 'fs';
+import path from 'path';
+import util from 'util';
 import ffmpeg from 'fluent-ffmpeg';
+import { uploadTrackSegments } from './trackService.js';
+import { getTracklist } from "./tracklistService.js";
 
-// Encode a single track using ffmpeg
+const unlink = util.promisify(fs.unlink);
+
 export const encodeTrack = (index, playlist, channelPath) => {
     const currentTrack = playlist[index];
+    console.log(`Encoding track${index}…`);
     const playlistPath = `${channelPath}/track${index}.mpd`;  // Output MPD file path
 
     return new Promise((resolve, reject) => {
@@ -30,15 +37,35 @@ export const encodeTrack = (index, playlist, channelPath) => {
     });
 };
 
-// Encode all tracks and generate the corresponding MPD files
 export const encodeTracks = async (playlist, channel) => {
     const channelPath = `./public/${channel}`;
-    const trackPromises = [];
+    const mpdPaths = [];
 
-    for (let i = 0; i < playlist.length; i++) {
-        trackPromises.push(encodeTrack(i, playlist, channelPath));
+    for (let index = 0; index < playlist.length; index++) {
+        // Encode the track
+        const mpdPath = await encodeTrack(index, playlist, channelPath);
+
+        // Upload the track segments
+        console.log(`Uploading segments for track${index}`);
+        await uploadTrackSegments(mpdPath);
+
+        // Delete the local segment files
+        const directory = path.dirname(mpdPath);
+        const baseName = path.basename(mpdPath, '.mpd');
+        const segmentFiles = fs.readdirSync(directory)
+            .filter(file => file.startsWith(baseName) && (file.endsWith('.m4s') || file.endsWith('_init.mp4')));
+
+        for (const file of segmentFiles) {
+            const filePath = path.join(directory, file);
+            if (fs.existsSync(filePath)) {
+                await unlink(filePath);
+            }
+        }
+        // Get uploadedInitUrl
+
+        // Store the MPD path
+        mpdPaths.push(mpdPath);
     }
 
-    const mpdPaths = await Promise.all(trackPromises);
     return mpdPaths;
-}
+};

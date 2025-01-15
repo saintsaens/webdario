@@ -1,15 +1,38 @@
 import fs from 'fs';
 import xml2js from 'xml2js';
 import * as trackEncodingService from './trackEncodingService.js';
+import { encodeTracks } from "./trackEncodingService.js";
 
-// Extract media presentation duration from MPD
-export const extractMediaPresentationDuration = async (mpdPath) => {
+export const extractDurationFromSingleTrackMpd = async (mpdPath) => {
     const data = fs.readFileSync(mpdPath, 'utf8');
     const result = await xml2js.parseStringPromise(data);
-    return result.MPD.$['mediaPresentationDuration'];
+    const duration = result.MPD.$['mediaPresentationDuration'];
+    return duration;
 }
 
-export const generateMPD = (tracks, durations, outputMPDPath) => {
+export const createUnifiedMPD = async (playlist, channel) => {
+    const singleMPDPaths = await encodeTracks(playlist, channel);
+    const durations = await Promise.all(
+        singleMPDPaths.map((mpdPath) => extractDurationFromSingleTrackMpd(mpdPath))
+    );
+
+    const unifiedMPDPath = createUnifiedMPDPath(channel);
+    const unifiedMPDHeader = createUnifiedMPDHeader();
+    const unifiedMPDFooter = createUnifiedMPDFooter();
+    const unifiedMPDPeriods = createUnifiedMPDPeriods(playlist, durations);
+
+    console.log(`Creating unified MPD…`);
+    const unifiedMPD = [
+        unifiedMPDHeader,
+        unifiedMPDPeriods,
+        unifiedMPDFooter
+    ].join('\n');
+    fs.writeFileSync(unifiedMPDPath, unifiedMPD);
+
+    return unifiedMPDPath;
+};
+
+const createUnifiedMPDHeader = () => {
     const mpdHeader = `<?xml version="1.0" encoding="UTF-8"?>
     <MPD xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="urn:mpeg:dash:schema:mpd:2011"
@@ -18,35 +41,46 @@ export const generateMPD = (tracks, durations, outputMPDPath) => {
         profiles="urn:mpeg:dash:profile:isoff-live:2011"
         type="static">`;
 
-    const periods = tracks.map((track, index) => `
-    <Period id="track${index}" duration="${durations[index]}">
-        <AdaptationSet id="track${index}" contentType="audio" startWithSAP="1" segmentAlignment="true" bitstreamSwitching="true">
-            <Representation id="track${index}" mimeType="audio/mp4" codecs="mp4a.40.2" bandwidth="128000" audioSamplingRate="44100">
-                <SegmentTemplate media="track${index}_$Number$.m4s" initialization="track${index}_init.mp4" duration="2" startNumber="1">
-                </SegmentTemplate>
-            </Representation>
-        </AdaptationSet>
-    </Period>`).join('\n');
+    return mpdHeader;
+};
+
+const createUnifiedMPDFooter = () => {
     const mpdFooter = `</MPD>`;
-    
-    const unifiedMPD = `${mpdHeader}\n${periods}\n${mpdFooter}`;
-    fs.writeFileSync(outputMPDPath, unifiedMPD);
+
+    return mpdFooter;
 }
 
-export const generateUnifiedMPD = async (playlist, channel) => {
-    const channelPath = `./public/${channel}`;
+const createUnifiedMPDPath = (channel) => {
+    const mpdPath = `${process.env.PUBLIC_MPD_PATH}/${channel}.mpd`;
 
-    const testTracks = [playlist[0], playlist[1]];  // Use the first two tracks for testing
-    const mpdPaths = await trackEncodingService.encodeTracks(testTracks, channel);
+    return mpdPath;
+};
 
-    // Process each MPD (you can use the mpdPaths array for further processing)
-    const duration1 = await extractMediaPresentationDuration(mpdPaths[0]);
-    const duration2 = await extractMediaPresentationDuration(mpdPaths[1]);
-    
-    const testDurations = [duration1, duration2];
-    const unifiedMPDPath = `${channelPath}/unified.mpd`;
+const createUnifiedMPDPeriods = (tracks, durations) => {
+    const mpdPeriods = tracks.map((track, index) => {
+        const initializationSegmentRoute = createInitializationSegmentRoute(index);
+        const mediaSegmentRoute = createMediaSegmentRoute(index);
+        
+        const period = `
+            <Period id="track${index}" duration="${durations[index]}">
+                <AdaptationSet id="track${index}" contentType="audio" startWithSAP="1" segmentAlignment="true" bitstreamSwitching="true">
+                    <Representation id="track${index}" mimeType="audio/mp4" codecs="mp4a.40.2" bandwidth="128000" audioSamplingRate="44100">
+                        <SegmentTemplate initialization="${initializationSegmentRoute}" media="${mediaSegmentRoute}" duration="2" startNumber="1">
+                        </SegmentTemplate>
+                    </Representation>
+                </AdaptationSet>
+            </Period>`;
+        
+        return period;
+    }).join('\n');  // Join the periods array with line breaks
 
-    generateMPD(testTracks, testDurations, unifiedMPDPath);  // Generate the unified MPD
+    return mpdPeriods;
+};
 
-    return unifiedMPDPath;
+const createInitializationSegmentRoute = (trackIndex) => {
+    return `http://localhost:3001/api/segment/track${trackIndex}_init.mp4`;
+};
+
+const createMediaSegmentRoute = (trackIndex) => {
+    return `http://localhost:3001/api/segment/track${trackIndex}_$Number$.m4s`;
 };

@@ -2,7 +2,7 @@ import express from 'express';
 import corsLoader from "./loaders/corsLoader.js";
 import morganLoader from "./loaders/morganLoader.js";
 import mountRoutes from "./routes/index.js";
-import { startStreams } from "./services/streamService.js";
+import { createRadio } from "./services/radioService.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -19,7 +19,7 @@ corsLoader(app);
 // Mount routes
 mountRoutes(app);
 
-await startStreams();
+await createRadio();
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
