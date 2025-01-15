@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import dashjs from 'dashjs';
 import MuteButton from './MuteButton';
 
 const backend_url = import.meta.env.VITE_BACKEND_URL;
@@ -11,24 +12,35 @@ const Stream = ({ path }) => {
   const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.load();
-      const promise = audioRef.current.play();
-      if (promise !== undefined) {
-        promise.then(() => {
-          setAutoplayFailed(false);
-          setIsPlaying(true);
-        }).catch(error => {
-          if (error.name === 'NotAllowedError') {
-          } else {
-            console.error('Playback failed:', error);
-          }
-          setAutoplayFailed(true);
-          setIsPlaying(false);
-        });
+    const player = dashjs.MediaPlayer().create(); // Create a new DASH.js player instance
+    player.initialize(audioRef.current, `${backend_url}/${path}`, true); // Initialize with the MPD file and autoplay
+
+    player.on(dashjs.MediaPlayer.events.STREAM_INITIALIZED, () => {
+      const playPromise = audioRef.current?.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setAutoplayFailed(false);
+            setIsPlaying(true);
+          })
+          .catch((error) => {
+            if (error.name === 'NotAllowedError') {
+              console.warn('Autoplay failed:', error);
+            } else {
+              console.error('Playback failed:', error);
+            }
+            setAutoplayFailed(true);
+            setIsPlaying(false);
+          });
       }
-    }
-  }, []);
+    });
+
+    player.on(dashjs.MediaPlayer.events.ERROR, (e) => {
+      console.error('DASH.js error:', e);
+    });
+
+    return () => player.reset(); // Cleanup on unmount
+  }, [path]);
 
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -43,11 +55,14 @@ const Stream = ({ path }) => {
 
   const handlePlay = () => {
     if (audioRef.current) {
-      audioRef.current.play().then(() => {
-        setIsPlaying(true);
-      }).catch(error => {
-        console.error('Playback failed:', error);
-      });
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch((error) => {
+          console.error('Playback failed:', error);
+        });
     }
   };
 
@@ -60,11 +75,8 @@ const Stream = ({ path }) => {
 
   return (
     <div className="stream">
-      <audio ref={audioRef}>
-        <source src={`${backend_url}/${path}`} type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
-      <MuteButton 
+      <audio ref={audioRef} />
+      <MuteButton
         ref={buttonRef}
         isPlaying={isPlaying}
         isMuted={isMuted}
