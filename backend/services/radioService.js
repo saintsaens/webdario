@@ -17,9 +17,7 @@ export const createRadio = async () => {
 export const createChannel = async (channelName) => {
     console.log("Fetching tracklist…");
     const tracklist = await getTracklist(channelName);
-    // const truncatedTracklist = tracklist.slice(0, 3);
-
-    // const channel = await createUnifiedMPD(truncatedTracklist, channelName);
+    
     const channel = await createUnifiedMPD(tracklist, channelName);
 
     return channel;

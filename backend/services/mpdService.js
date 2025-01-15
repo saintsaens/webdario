@@ -78,9 +78,9 @@ const createUnifiedMPDPeriods = (tracks, durations) => {
 };
 
 const createInitializationSegmentRoute = (trackIndex) => {
-    return `http://localhost:3001/api/segment/track${trackIndex}_init.mp4`;
+    return `${process.env.BACKEND_URL}/api/segment/track${trackIndex}_init.mp4`;
 };
 
 const createMediaSegmentRoute = (trackIndex) => {
-    return `http://localhost:3001/api/segment/track${trackIndex}_$Number$.m4s`;
+    return `${process.env.BACKEND_URL}/api/segment/track${trackIndex}_$Number$.m4s`;
 };
