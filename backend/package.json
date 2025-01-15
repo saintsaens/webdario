@@ -7,7 +7,9 @@
   "scripts": {
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "start": "nodemon server.js",
+    "start-server": "node server.js",
+    "start-server-dev": "nodemon server.js",
+    "create-radio": "node createRadio.js",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
   },
