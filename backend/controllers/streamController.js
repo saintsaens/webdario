@@ -3,7 +3,7 @@ import * as mpdService from "../services/mpdService.js"
 
 export const getLofiStream = async (req, res) => {
     try {
-        const channelName = process.env.LOFI_CHANNEL_NAME;
+        const channelName = `${process.env.LOFI_CHANNEL_NAME}.mpd`;
 
         const channelStream = await mpdService.getMpdStream(channelName);
 
