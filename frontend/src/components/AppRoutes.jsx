@@ -2,7 +2,6 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import LofiStream from './LofiStream';
 import CoudrierStream from './CoudrierStream';
-import About from './About';
 
 function AppRoutes() {
     return (
