@@ -16,55 +16,82 @@ export const extractTimescale = async (mpdPath) => {
     const options = {
         explicitArray: false,
         mergeAttrs: true,
-        xmlns: true,
     };
-    const result = await xml2js.parseStringPromise(data, options);
-    const timescale = result.MPD?.Period?.AdaptationSet?.Representation?.SegmentTemplate?.timescale?.value;
-    if (!timescale) {
-        throw new Error(`SegmentTemplate attribute "timescale" not found in the provided MPD file.`);
+
+    try {
+        const result = await xml2js.parseStringPromise(data, options);
+        const adaptationSet = result['MPD']?.['Period']?.['AdaptationSet'];
+        let timescale = "";
+        if (Array.isArray(adaptationSet)) {
+            timescale = result['MPD']?.['Period']?.['AdaptationSet'][0]?.['Representation']?.['SegmentTemplate'].timescale;
+        } else {
+            timescale = result['MPD']?.['Period']?.['AdaptationSet']?.['Representation']?.['SegmentTemplate'].timescale;
+        }
+
+        if (timescale === "") {
+            throw new Error(`timescale not found in ${mpdPath}`);
+        }
+        return timescale;
+    } catch (error) {
+        console.error('Error parsing XML:', error.message);
+        throw error;
     }
-    return timescale;
 };
 
 export const extractSegmentTemplateDuration = async (mpdPath) => {
     const data = fs.readFileSync(mpdPath, 'utf8');
     const options = {
-      explicitArray: false,
-      mergeAttrs: true,
-      xmlns: true,
+        explicitArray: false,
+        mergeAttrs: true,
     };
-    const result = await xml2js.parseStringPromise(data, options);
-    const duration = result.MPD?.Period?.AdaptationSet?.Representation?.SegmentTemplate?.duration?.value;
-    if (!duration) {
-      throw new Error(`SegmentTemplate attribute "duration" not found in the provided MPD file.`);
-    }
-    return duration;
-  };
+    try {
+        const result = await xml2js.parseStringPromise(data, options);
+        const adaptationSet = result['MPD']?.['Period']?.['AdaptationSet'];
+        let duration = "";
+        if (Array.isArray(adaptationSet)) {
+            duration = result['MPD']?.['Period']?.['AdaptationSet'][0]?.['Representation']?.['SegmentTemplate'].duration;
+        } else {
+            duration = result['MPD']?.['Period']?.['AdaptationSet']?.['Representation']?.['SegmentTemplate'].duration;
+        }
 
-  export const extractAudioChannelConfiguration = async (mpdPath) => {
+        if (duration === "") {
+            throw new Error(`duration not found in ${mpdPath}`);
+        }
+        return duration;
+    } catch (error) {
+        console.error('Error parsing XML:', error.message);
+        throw error;
+    }
+};
+
+export const extractAudioChannelConfiguration = async (mpdPath) => {
     const data = fs.readFileSync(mpdPath, 'utf8');
     const options = {
         explicitArray: false,  // Avoid wrapping tags in arrays if there's only one occurrence
         mergeAttrs: true,      // Merge attributes into the tag object
-        xmlns: true,           // Enable namespace handling
     };
-    const result = await xml2js.parseStringPromise(data, options);
-    
-    const audioChannelConfiguration = result['MPD']?.['Period']?.['AdaptationSet']?.['Representation']?.['AudioChannelConfiguration'];
-    if (!audioChannelConfiguration) {
-        throw new Error('AudioChannelConfiguration not found in the MPD.');
+    try {
+        const result = await xml2js.parseStringPromise(data, options);
+        const adaptationSet = result['MPD']?.['Period']?.['AdaptationSet'];
+        let audioChannelConfiguration = "";
+        if (Array.isArray(adaptationSet)) {
+            audioChannelConfiguration = result['MPD']?.['Period']?.['AdaptationSet'][1]?.['Representation']?.['AudioChannelConfiguration'];
+        } else {
+            audioChannelConfiguration = result['MPD']?.['Period']?.['AdaptationSet']?.['Representation']?.['AudioChannelConfiguration'];
+        }
+        if (audioChannelConfiguration === "" || !audioChannelConfiguration) {
+            throw new Error(`AudioChannelConfiguration not found in ${mpdPath}`);
+        }
+        const schemeIdUri = audioChannelConfiguration['schemeIdUri'];
+        const value = audioChannelConfiguration['value'];
+        if (!schemeIdUri || !value) {
+            throw new Error('Required attributes (schemeIdUri, value) missing from AudioChannelConfiguration.');
+        }
+        return `<AudioChannelConfiguration schemeIdUri="${schemeIdUri}" value="${value}" />`;
+    } catch (error) {
+        console.error(`Error parsing ${mpdPath}:`, error.message);
+        throw error;
     }
-
-    // Extract the values from the audioChannelConfiguration object
-    const schemeIdUri = audioChannelConfiguration['schemeIdUri']?.value;
-    const value = audioChannelConfiguration['value']?.value;
-
-    if (!schemeIdUri || !value) {
-        throw new Error('Required attributes (schemeIdUri, value) missing from AudioChannelConfiguration.');
-    }
-
-    // Return the correctly formatted tag
-    return `<AudioChannelConfiguration schemeIdUri="${schemeIdUri}" value="${value}" />`;
 };
 
 export const createUnifiedMPD = async (playlist, channel) => {
@@ -132,13 +159,13 @@ const createUnifiedMpdPeriod = async (track, index, sourceMpd) => {
 
 const createUnifiedMpdPeriods = async (tracks, singleMpdPaths) => {
     const mpdPeriods = await Promise.all(
-      tracks.map((track, index) =>
-        createUnifiedMpdPeriod(track, index, singleMpdPaths[index])
-      )
+        tracks.map((track, index) =>
+            createUnifiedMpdPeriod(track, index, singleMpdPaths[index])
+        )
     );
-  
+
     return mpdPeriods.join('\n');
-  };
+};
 
 const createInitSegmentRoute = (trackIndex) => {
     return `${process.env.BACKEND_URL}/api/segment/track${trackIndex}_init.mp4`;
