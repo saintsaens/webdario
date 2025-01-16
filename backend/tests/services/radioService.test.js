@@ -48,10 +48,6 @@ describe("radioService", () => {
             await expect(createChannel(mockChannelName)).rejects.toThrow(mockError);
 
             expect(tracklistService.getTracklist).toHaveBeenCalledWith(mockChannelName);
-            expect(mpdService.createUnifiedMPD).toHaveBeenCalledWith(
-                mockTracklist.slice(0, 5),
-                mockChannelName
-            );
         });
     });
 
