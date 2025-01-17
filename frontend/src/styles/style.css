@@ -40,7 +40,8 @@ h1 {
 .mute-button {
   position: fixed;
   top: 10px;
-  transition: opacity 0.3s ease;
+  left: 50%;            /* Centers it horizontally */
+  transform: translateX(-50%);  /* Adjusts the button's position to truly center it */
   opacity: 0.5;
 }
 
@@ -102,4 +103,9 @@ button:hover {
   color: white;
   font-size: 3rem;
   text-align: center;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }

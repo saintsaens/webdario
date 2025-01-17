@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { setMuted } from "../store/features/audioPlayerSlice";
 
@@ -34,9 +34,7 @@ const AudioControls = ({ audioRef }) => {
         </div>
       )}
       <div className="mute-button">
-        <button>
-          {isMuted ? 'Unmute (K)' : 'Mute (K)'}
-        </button>
+          {!isMuted && 'K to mute'}
       </div>
     </>
   );
