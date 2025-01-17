@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import dashjs from 'dashjs';
+import { computeStartTime } from "./utils/time.js";
 
 const AudioPlayer = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const src = `${backendUrl}/lofi`;
-  let startTime = 260;
+  const startTime = computeStartTime();
 
   useEffect(() => {
     const video = document.querySelector('video');
