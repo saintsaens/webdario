@@ -10,7 +10,16 @@ const AudioPlayer = () => {
   useEffect(() => {
     const video = document.querySelector('video');
     const player = dashjs.MediaPlayer().create();
-    video.muted = true;
+
+    player.on(dashjs.MediaPlayer.events.PLAYBACK_NOT_ALLOWED, function (data) {
+      console.log('Playback did not start due to auto play restrictions. Muting audio and reloading');
+      video.muted = true;
+      player.initialize();
+      player.attachView(video);
+      player.setAutoPlay(true);
+      player.attachSource(src, startTime);
+    });
+
     video.loop = true;
     player.initialize();
     player.attachView(video);
