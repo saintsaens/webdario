@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import dashjs from 'dashjs';
 import { computeStartTime } from "./utils/time.js";
 
-const AudioPlayer = () => {
+const AudioPlayer = ({ audioRef }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const src = `${backendUrl}/lofi`;
   const startTime = computeStartTime();
 
   useEffect(() => {
-    const video = document.querySelector('video');
+    const video = audioRef.current;
     const player = dashjs.MediaPlayer().create();
 
     player.on(dashjs.MediaPlayer.events.PLAYBACK_NOT_ALLOWED, function (data) {
@@ -25,14 +25,15 @@ const AudioPlayer = () => {
     player.attachView(video);
     player.setAutoPlay(true);
     player.attachSource(src, startTime);
+
     return () => {
       player.reset();
     };
-  }, []);
+  }, [src, startTime]);
 
   return (
     <>
-      <video controls></video>
+      <video ref={audioRef} controls></video>
     </>
   );
 };

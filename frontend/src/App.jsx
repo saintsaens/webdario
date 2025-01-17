@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './styles/style.css';
 import AudioPlayer from "./components/AudioPlayer";
 import AudioControls from "./components/AudioControls";
 
 
 
-function App() {
+const App = () => {
+    const audioRef = useRef(null);
+
     return (
         <>
-            <AudioPlayer />
-            <AudioControls />
+            <AudioPlayer audioRef={audioRef}/>
+            <AudioControls audioRef={audioRef}/>
         </>
     );
 }
