@@ -1,16 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import dashjs from 'dashjs';
 
 const AudioPlayer = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const src = `${backendUrl}/lofi`;
+  let startTime = 260;
 
   useEffect(() => {
-    // Masquerading audio as video, to enable the muted autoplay trick
     const video = document.querySelector('video');
     const player = dashjs.MediaPlayer().create();
     video.muted = true;
-    player.initialize(video, src, true);
+    video.loop = true;
+    player.initialize();
+    player.attachView(video);
+    player.setAutoPlay(true);
+    player.attachSource(src, startTime);
     return () => {
       player.reset();
     };
