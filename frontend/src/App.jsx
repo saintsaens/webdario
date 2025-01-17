@@ -1,13 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import AppRoutes from './components/AppRoutes';
 import './styles/style.css';
+import AudioPlayer from "./components/AudioPlayer";
+
+
 
 function App() {
     return (
-        <Router>
-            <AppRoutes />
-        </Router>
+        <>
+            <AudioPlayer />
+        </>
     );
 }
 
