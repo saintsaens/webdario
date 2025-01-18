@@ -28,7 +28,6 @@ const AudioPlayer = ({ audioRef }) => {
   const updatePlaylistDuration = (player) => {
     player.on(dashjs.MediaPlayer.events.PLAYBACK_METADATA_LOADED, () => {
       const duration = player.duration();
-      console.log(`Updating playlist duration: ${duration}`);
       dispatch(setPlaylistDuration(duration));
     });
   };
@@ -45,7 +44,6 @@ const AudioPlayer = ({ audioRef }) => {
     if (!video) return;
 
     const player = dashjs.MediaPlayer().create();
-    console.log(`Playlist duration: ${playlistDuration}`);
     const start = computeStartTime(playlistDuration);
 
     // Set video attributes and dispatch initial state
