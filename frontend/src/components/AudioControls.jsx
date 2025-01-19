@@ -46,8 +46,11 @@ const AudioControls = ({ audioRef }) => {
           <div className="overlay-text">{isMobile ? 'Tap to unmute' : 'K to unmute'}</div>
         </div>
       )}
-      <div className="mute-button">
-        {!isMuted && (isMobile ? 'Tap to mute' : 'K to mute')}
+      <div className="mute-label">
+        {!isMuted && (isMobile ? 'Tap to mute' : 'K: mute')}
+      </div>
+      <div className="switch-label">
+        {!isMuted && !isMobile && '⌘+K: switch'}
       </div>
     </>
   );
