@@ -60,7 +60,7 @@ const AudioPlayer = ({ audioRef }) => {
 
   return (
     <>
-      <video ref={audioRef} />)
+      <video ref={audioRef} />
     </>
   );
 };
