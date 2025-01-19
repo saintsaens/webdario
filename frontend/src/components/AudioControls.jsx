@@ -18,7 +18,7 @@ const AudioControls = ({ audioRef }) => {
 
   useEffect(() => {
     const handleKeyPress = (event) => {
-      if (event.key.toLowerCase() === 'k') {
+      if (!(event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         handleToggleMute();
       }
 

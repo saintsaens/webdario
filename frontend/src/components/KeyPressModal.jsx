@@ -15,7 +15,8 @@ const KeyPressModal = () => {
     const searchInputRef = useRef(null); // Reference for the search input field
 
     const handleKeyPress = (event) => {
-        // If the modal is open, prevent "P" from toggling it
+        const isCmdK = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k'; // Detect Cmd + K or Ctrl + K
+
         if (isModalVisible) {
             if (event.key === 'ArrowDown') {
                 setSelectedIndex((prevState) => (prevState + 1) % filteredItems.length); // Wrap around
@@ -23,17 +24,13 @@ const KeyPressModal = () => {
                 setSelectedIndex(
                     (prevState) => (prevState - 1 + filteredItems.length) % filteredItems.length // Wrap around
                 );
-            }
-        } else {
-            // Only allow "P" to toggle modal when it's not open
-            if (event.key.toLowerCase() === 'p') {
-                event.preventDefault();
-                setIsModalVisible((prevState) => !prevState);
+            } else if (event.key === 'Escape') {
+                setIsModalVisible(false); // Close modal on Escape
             }
         }
-
-        if (event.key === 'Escape') {
-            setIsModalVisible(false);
+        if (isCmdK) {
+            event.preventDefault(); // Prevent default Cmd + K behavior
+            setIsModalVisible((prevState) => !prevState); // Toggle modal visibility
         }
     };
 
