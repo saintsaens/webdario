@@ -5,7 +5,7 @@ const KeyPressModal = () => {
     const [selectedIndex, setSelectedIndex] = useState(0); // Track selected list item index
     const [searchQuery, setSearchQuery] = useState(''); // Track search input
 
-    const listItems = ['🐈 lofi', '🎧 coudrier', 'trip-hop', 'années 80 de folie'];
+    const listItems = ['lofi', 'coudrier'];
 
     // Filter list items based on the search query
     const filteredItems = listItems.filter((item) =>

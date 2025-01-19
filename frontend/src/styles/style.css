@@ -113,18 +113,22 @@ a:hover {
 
 /* Modal Content */
 .modal-content {
-  background-color: #282828; /* Dark background for content */
-  border-radius: 8px;
-  width: 500px; /* A bit narrower for a compact look */
-  color: #ccc; /* Light gray text for a minimalist touch */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Soft shadow for depth */
+  position: fixed; /* Fix modal position */
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally */
+  background-color: #282828; /* Dark background */
+  border-radius: 4px;
+  width: 500px; /* Compact width */
+  color: #ccc; /* Light gray text */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Soft shadow */
 }
 
 /* Search Input */
 .search-input {
   padding: 12px 15px;
   width: 100%;
-  border-radius: 5px;
+  border-radius: 4px;
   background-color: #333; /* Dark background to match */
   color: #fff;
   font-size: 2rem;
@@ -156,7 +160,7 @@ a:hover {
 }
 
 .selected {
-  background-color: #c592ff; /* Soft purple for selected items */
+  background-color: #faeb4e; /* Soft purple for selected items */
   color: #100d23;
   font-weight: bold; /* Bold text for better emphasis */
 }
