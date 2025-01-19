@@ -95,3 +95,68 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85); /* Darker overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #282828; /* Dark background for content */
+  border-radius: 8px;
+  width: 500px; /* A bit narrower for a compact look */
+  color: #ccc; /* Light gray text for a minimalist touch */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Soft shadow for depth */
+}
+
+/* Search Input */
+.search-input {
+  padding: 12px 15px;
+  width: 100%;
+  border-radius: 5px;
+  background-color: #333; /* Dark background to match */
+  color: #fff;
+  font-size: 2rem;
+  font-family: 'iA Writer Duospace', sans-serif;
+  outline: none;
+  border: none;
+}
+
+.search-input:focus {
+  outline: none;
+}
+
+/* List Styles */
+.modal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-list-item {
+  padding: 12px;
+  font-family: 'iA Writer Duospace', sans-serif;
+  font-size: 1.1rem;
+  color: #ddd;
+}
+
+.modal-list-item:hover {
+  background-color: #444; /* Slight hover effect */
+}
+
+.selected {
+  background-color: #c592ff; /* Soft purple for selected items */
+  color: #100d23;
+  font-weight: bold; /* Bold text for better emphasis */
+}

@@ -1,19 +1,18 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import './styles/style.css';
-import AudioPlayer from "./components/AudioPlayer";
-import AudioControls from "./components/AudioControls";
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from "./components/AppRoutes";
 import About from "./components/About";
-import Channel from "./components/Channel";
+import KeyPressModal from "./components/KeyPressModal";
 
 const App = () => {
-    const audioRef = useRef(null);
-
     return (
         <>
-            <Channel />
-            <AudioPlayer audioRef={audioRef} />
-            <AudioControls audioRef={audioRef} />
-            <About />
+        <Router>
+            <AppRoutes />
+        </Router>
+        <KeyPressModal />
+        <About />
         </>
     );
 }

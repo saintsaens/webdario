@@ -1,11 +1,16 @@
-import React from 'react';
-import Stream from './Stream';
+import React, { useRef } from 'react';
+import Channel from "./Channel";
+import AudioPlayer from "./AudioPlayer";
+import AudioControls from "./AudioControls";
 
 const CoudrierStream = () => {
+    const audioRef = useRef(null);
+
     return (
         <>
-            <Stream path="coudrier" />
-            <h1>coudrier</h1>
+            <Channel channelName={`coudrier`} />
+            <AudioPlayer audioRef={audioRef} />
+            <AudioControls audioRef={audioRef} />
         </>
     );
 };
