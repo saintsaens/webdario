@@ -156,10 +156,6 @@ a:hover {
   color: #ddd;
 }
 
-.modal-list-item:hover {
-  background-color: #444; /* Slight hover effect */
-}
-
 .selected {
   background-color: #faeb4e; /* Soft purple for selected items */
   color: #100d23;
