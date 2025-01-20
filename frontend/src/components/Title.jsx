@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-const Channel = ({channelName}) => {
+const Title = ({channelName}) => {
     const isMuted = useSelector((state) => state.audioPlayer.isMuted);
 
     return (
@@ -11,4 +11,4 @@ const Channel = ({channelName}) => {
     );
 };
 
-export default Channel;
+export default Title;

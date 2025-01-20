@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setMuted } from "../store/features/audioPlayerSlice";
 import useIsMobile from "../hooks/useIsMobile";
 
-const AudioControls = ({ audioRef }) => {
+const MuteToggler = ({ audioRef }) => {
   const isMuted = useSelector((state) => state.audioPlayer.isMuted);
   const isMobile = useIsMobile();
   const dispatch = useDispatch();
@@ -56,4 +56,4 @@ const AudioControls = ({ audioRef }) => {
   );
 };
 
-export default AudioControls;
+export default MuteToggler;

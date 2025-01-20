@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 
-const KeyPressModal = () => {
+const ChannelSwitcher = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0); // Track selected list item index
     const [searchQuery, setSearchQuery] = useState(''); // Track search input
 
     const listItems = ['lofi', 'coudrier'];
+    const navigate = useNavigate();
 
     // Filter list items based on the search query
     const filteredItems = listItems.filter((item) =>
@@ -24,6 +26,9 @@ const KeyPressModal = () => {
                 setSelectedIndex(
                     (prevState) => (prevState - 1 + filteredItems.length) % filteredItems.length // Wrap around
                 );
+            } else if (event.key === 'Enter') {
+                navigate(`/${filteredItems[selectedIndex]}`); // Navigate to the selected channel
+                setIsModalVisible(false); // Close modal after navigation
             } else if (event.key === 'Escape') {
                 setIsModalVisible(false); // Close modal on Escape
             }
@@ -85,4 +90,4 @@ const KeyPressModal = () => {
     );
 };
 
-export default KeyPressModal;
+export default ChannelSwitcher;
