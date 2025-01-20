@@ -5,6 +5,7 @@ import useIsMobile from "../hooks/useIsMobile";
 
 const MuteToggler = ({ audioRef }) => {
   const isMuted = useSelector((state) => state.audioPlayer.isMuted);
+  const error = useSelector((state) => state.audioPlayer.error);
   const isMobile = useIsMobile();
   const dispatch = useDispatch();
 
@@ -43,7 +44,9 @@ const MuteToggler = ({ audioRef }) => {
     <>
       {isMuted && (
         <div className="overlay">
-          <div className="overlay-text">{isMobile ? 'Tap to unmute' : 'K to unmute'}</div>
+          <div className="overlay-text">
+            {!error && (isMobile ? 'Tap to unmute' : 'K to unmute')}
+          </div>
         </div>
       )}
       <div className="mute-label">

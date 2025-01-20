@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import audoPlayerReducer from "./features/audioPlayerSlice";
+import audioPlayerReducer from "./features/audioPlayerSlice";
+import channelSwitcherReducer from "./features/channelSwitcherSlice"
 
 const store = configureStore({
   reducer: {
-    audioPlayer: audoPlayerReducer,
+    audioPlayer: audioPlayerReducer,
+    channelSwitcher: channelSwitcherReducer,
   },
 });
 

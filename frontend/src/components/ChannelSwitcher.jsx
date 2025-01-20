@@ -1,16 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setSelectedIndex } from "../store/features/channelSwitcherSlice";
 
 const ChannelSwitcher = () => {
+    const currentChannel = useSelector((state) => state.channelSwitcher.currentChannel);
+    const selectedIndex = useSelector((state) => state.channelSwitcher.selectedIndex);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [selectedIndex, setSelectedIndex] = useState(0); // Track selected list item index
     const [searchQuery, setSearchQuery] = useState(''); // Track search input
 
     const listItems = ['lofi', 'coudrier'];
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    // Processed list: sort alphabetically and move currentChannel to the bottom
+    const processedItems = [...listItems]
+        .sort((a, b) => a.localeCompare(b)) // Sort alphabetically
+        .filter((item) => item !== currentChannel) // Exclude currentChannel temporarily
+        .concat(currentChannel ? [currentChannel] : []); // Append currentChannel if it exists
 
     // Filter list items based on the search query
-    const filteredItems = listItems.filter((item) =>
+    const filteredItems = processedItems.filter((item) =>
         item.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
@@ -21,16 +31,17 @@ const ChannelSwitcher = () => {
 
         if (isModalVisible) {
             if (event.key === 'ArrowDown') {
-                setSelectedIndex((prevState) => (prevState + 1) % filteredItems.length); // Wrap around
+                dispatch(setSelectedIndex((selectedIndex + 1) % filteredItems.length)); // Wrap around for down
             } else if (event.key === 'ArrowUp') {
-                setSelectedIndex(
-                    (prevState) => (prevState - 1 + filteredItems.length) % filteredItems.length // Wrap around
-                );
+                dispatch(setSelectedIndex(
+                    (selectedIndex - 1 + filteredItems.length) % filteredItems.length // Wrap around for up
+                ));
             } else if (event.key === 'Enter') {
                 navigate(`/${filteredItems[selectedIndex]}`); // Navigate to the selected channel
                 setIsModalVisible(false); // Close modal after navigation
             } else if (event.key === 'Escape') {
                 setIsModalVisible(false); // Close modal on Escape
+                dispatch(setSelectedIndex(0)); // Reset selected index
             }
         }
         if (isCmdK) {
