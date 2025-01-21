@@ -19,7 +19,7 @@ const audioPlayerSlice = createSlice({
   name: "audioPlayer",
   initialState: {
     isMuted: true,
-    playlistDuration: 5801,
+    playlistDuration: 241200,
     error: false,
   },
   reducers: {
