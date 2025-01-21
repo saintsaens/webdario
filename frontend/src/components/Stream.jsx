@@ -17,7 +17,7 @@ const Stream = ({channelName}) => {
     return (
         <>
             <Title channelName={channelName} />
-            <AudioPlayer audioRef={audioRef} />
+            <AudioPlayer audioRef={audioRef} channelName={channelName} />
             <MuteToggler audioRef={audioRef} />
             <ChannelSwitcher />
         </>
