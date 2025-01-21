@@ -46,22 +46,21 @@ export const encodeTracks = async (playlist, channel) => {
         const mpdPath = await encodeTrack(index, playlist, channelPath);
 
         // Upload the track segments
-        console.log(`Uploading segments for track${index}`);
-        await uploadTrackSegments(mpdPath);
+        // console.log(`Uploading segments for track${index}`);
+        // await uploadTrackSegments(mpdPath);
 
-        // Delete the local segment files
-        const directory = path.dirname(mpdPath);
-        const baseName = path.basename(mpdPath, '.mpd');
-        const segmentFiles = fs.readdirSync(directory)
-            .filter(file => file.startsWith(baseName) && (file.endsWith('.m4s') || file.endsWith('_init.mp4')));
+        // // Delete the local segment files
+        // const directory = path.dirname(mpdPath);
+        // const baseName = path.basename(mpdPath, '.mpd');
+        // const segmentFiles = fs.readdirSync(directory)
+        //     .filter(file => file.startsWith(baseName) && (file.endsWith('.m4s') || file.endsWith('_init.mp4')));
 
-        for (const file of segmentFiles) {
-            const filePath = path.join(directory, file);
-            if (fs.existsSync(filePath)) {
-                await unlink(filePath);
-            }
-        }
-        // Get uploadedInitUrl
+        // for (const file of segmentFiles) {
+        //     const filePath = path.join(directory, file);
+        //     if (fs.existsSync(filePath)) {
+        //         await unlink(filePath);
+        //     }
+        // }
 
         // Store the MPD path
         mpdPaths.push(mpdPath);

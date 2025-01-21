@@ -15,7 +15,7 @@ export const uploadSegment = async (segmentPath) => {
     return uploadedSegmentName;
 };
 
-export const getSegmentStream = async (segmentName) => {
-    const segmentStream = await segmentsRepository.getSegment(segmentName);
+export const getSegmentStream = async (channelName, segmentName) => {
+    const segmentStream = await segmentsRepository.getSegment(channelName, segmentName);
     return segmentStream;
 };

@@ -1,14 +1,14 @@
 /* Font Definitions */
 @font-face {
   font-family: 'iA Writer Duospace';
-  src: url('./fonts/ia-writer-duospace/ia-writer-duospace-regular.otf') format('opentype');
+  src: url('./fonts/ia-writer-duospace/iAWriterDuospace-Regular.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'iA Writer Duospace';
-  src: url('./fonts/ia-writer-duospace/ia-writer-duospace-bold.otf') format('opentype');
+  src: url('./fonts/ia-writer-duospace/iAWriterDuospace-Bold.otf') format('opentype');
   font-weight: bold;
   font-style: normal;
 }
@@ -44,18 +44,20 @@ h1 {
   transform: translate(-50%, -50%);
 }
 
-/* Buttons */
-.mute-button {
+/* Labels */
+.mute-label {
   position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 1%;
+  left: 10px;
   opacity: 0.5;
-  transition: opacity 0.3s ease;
 }
 
-.mute-button.muted {
-  opacity: 1;
+
+.switch-label {
+  position: fixed;
+  top: 4%;
+  left: 10px;
+  opacity: 0.5;
 }
 
 .about-button {
@@ -63,7 +65,6 @@ h1 {
   bottom: 10px;
   right: 10px;
   opacity: 0.5;
-  transition: opacity 0.3s ease;
 }
 
 /* Overlay */
@@ -94,4 +95,69 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85); /* Darker overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Modal Content */
+.modal-content {
+  position: fixed; /* Fix modal position */
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally */
+  background-color: #282828; /* Dark background */
+  border-radius: 4px;
+  width: 500px; /* Compact width */
+  color: #ccc; /* Light gray text */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Soft shadow */
+}
+
+/* Search Input */
+.search-input {
+  padding: 12px 15px;
+  width: 100%;
+  border-radius: 4px;
+  background-color: #333; /* Dark background to match */
+  color: #fff;
+  font-size: 2rem;
+  font-family: 'iA Writer Duospace', sans-serif;
+  outline: none;
+  border: none;
+}
+
+.search-input:focus {
+  outline: none;
+}
+
+/* List Styles */
+.modal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-list-item {
+  padding: 12px;
+  font-family: 'iA Writer Duospace', sans-serif;
+  font-size: 1.1rem;
+  color: #ddd;
+}
+
+.selected {
+  background-color: #faeb4e; /* Soft purple for selected items */
+  color: #100d23;
+  font-weight: bold; /* Bold text for better emphasis */
 }

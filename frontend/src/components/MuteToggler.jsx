@@ -3,8 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { setMuted } from "../store/features/audioPlayerSlice";
 import useIsMobile from "../hooks/useIsMobile";
 
-const AudioControls = ({ audioRef }) => {
+const MuteToggler = ({ audioRef }) => {
   const isMuted = useSelector((state) => state.audioPlayer.isMuted);
+  const error = useSelector((state) => state.audioPlayer.error);
   const isMobile = useIsMobile();
   const dispatch = useDispatch();
 
@@ -18,7 +19,7 @@ const AudioControls = ({ audioRef }) => {
 
   useEffect(() => {
     const handleKeyPress = (event) => {
-      if (event.key.toLowerCase() === 'k') {
+      if (!(event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         handleToggleMute();
       }
 
@@ -43,14 +44,19 @@ const AudioControls = ({ audioRef }) => {
     <>
       {isMuted && (
         <div className="overlay">
-          <div className="overlay-text">{isMobile ? 'Tap to unmute' : 'K to unmute'}</div>
+          <div className="overlay-text">
+            {!error && (isMobile ? 'Tap to unmute' : 'K to unmute')}
+          </div>
         </div>
       )}
-      <div className="mute-button">
-        {!isMuted && (isMobile ? 'Tap to mute' : 'K to mute')}
+      <div className="mute-label">
+        {!isMuted && (isMobile ? 'Tap to mute' : 'K: mute')}
+      </div>
+      <div className="switch-label">
+        {!isMuted && !isMobile && '⌘+K: switch'}
       </div>
     </>
   );
 };
 
-export default AudioControls;
+export default MuteToggler;
