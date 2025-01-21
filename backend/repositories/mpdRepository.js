@@ -12,8 +12,9 @@ export const uploadMpd = async (mpdStream, mpdName) => {
     }
 };
 
-export const getMpd = async (mpdName) => {
-    const mpdPath = `${process.env.MINIO_LOFI_MPD_PATH}/${mpdName}`;
+export const getMpd = async (channelName) => {
+    const mpdFileName = `${channelName}.mpd`;
+    const mpdPath = `${process.env.MINIO_MPD_PATH}/${channelName}/${mpdFileName}`;
     try {
         const dataStream = await minioClient.getObject(bucket, mpdPath);
         return dataStream; // This returns the readable stream of the segment

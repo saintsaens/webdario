@@ -3,12 +3,15 @@ import fs from "fs";
 
 export const getSegment = async (req, res) => {
     try {
-        const { segmentName } = req.params;
+        const { channelName, segmentName } = req.params;
+        if (!channelName) {
+            return res.status(400).send('Channel name is required');
+        }
         if (!segmentName) {
             return res.status(400).send('Segment name is required');
         }
 
-        const segmentStream = await segmentsService.getSegmentStream(segmentName)
+        const segmentStream = await segmentsService.getSegmentStream(channelName, segmentName)
 
         res.setHeader('Content-Type', 'audio/mp4');  // For .m4s and .mp4 segments
 

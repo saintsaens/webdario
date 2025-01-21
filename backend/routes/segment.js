@@ -3,4 +3,4 @@ import { getSegment } from "../controllers/segmentController.js";
 
 export const segmentRouter = Router();
 
-segmentRouter.get('/:segmentName', getSegment);
+segmentRouter.get('/:channelName/:segmentName', getSegment);

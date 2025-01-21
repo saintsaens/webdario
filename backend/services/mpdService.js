@@ -188,7 +188,7 @@ export const uploadMpd = async (mpdPath) => {
     return uploadedMpdName;
 };
 
-export const getMpdStream = async (mpdName) => {
-    const mpdStream = await mpdRepository.getMpd(mpdName);
+export const getMpdStream = async (channelName) => {
+    const mpdStream = await mpdRepository.getMpd(channelName);
     return mpdStream;
 };
