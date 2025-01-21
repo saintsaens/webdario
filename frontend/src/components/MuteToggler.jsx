@@ -53,7 +53,7 @@ const MuteToggler = ({ audioRef }) => {
         {!isMuted && (isMobile ? 'Tap to mute' : 'K: mute')}
       </div>
       <div className="switch-label">
-        {!isMuted && !isMobile && '⌘+K: switch'}
+        {!isMuted && !isMobile && '⌘+K: switcher'}
       </div>
     </>
   );
