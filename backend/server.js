@@ -2,7 +2,6 @@ import express from 'express';
 import corsLoader from "./loaders/corsLoader.js";
 import morganLoader from "./loaders/morganLoader.js";
 import mountRoutes from "./routes/index.js";
-import reactRouterMiddleware from "./loaders/reactRouterMiddleware.js";
 import dotenv from 'dotenv';
 
 dotenv.config();
