@@ -17,7 +17,7 @@ morganLoader(app);
 corsLoader(app);
 
 // Serve static files
-app.use(express.static('build'));
+app.use(express.static('dist'));
 
 // Mount routes
 mountRoutes(app);
