@@ -4,7 +4,7 @@ import corsLoader from "./loaders/corsLoader.js";
 import morganLoader from "./loaders/morganLoader.js";
 import mountRoutes from "./routes/index.js";
 import dotenv from 'dotenv';
-import connectionTracker from "./utils/connectionTracker.js";
+import connectionTracker from "./loaders/connectionTracker.js";
 
 dotenv.config();
 
