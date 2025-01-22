@@ -1,8 +1,10 @@
 import express from 'express';
+import http from 'http';
 import corsLoader from "./loaders/corsLoader.js";
 import morganLoader from "./loaders/morganLoader.js";
 import mountRoutes from "./routes/index.js";
 import dotenv from 'dotenv';
+import { connectionTracker } from "./loaders/connectionTracker.js";
 
 dotenv.config();
 
@@ -18,6 +20,10 @@ corsLoader(app);
 // Mount routes
 mountRoutes(app);
 
-app.listen(port, () => {
+// Create an HTTP server to track connections
+const server = http.createServer(app);
+connectionTracker(server);
+
+server.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });

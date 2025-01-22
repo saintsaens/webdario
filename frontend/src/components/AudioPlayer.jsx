@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMuted, setPlaylistDuration, checkStream } from "../store/features/audioPlayerSlice.js";
 
 const AudioPlayer = ({ audioRef, channelName }) => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL_LOCAL;
   const src = `${backendUrl}/${channelName}`;
   const playlistDuration = useSelector((state) => state.audioPlayer.playlistDuration);
   const error = useSelector((state) => state.audioPlayer.error);
