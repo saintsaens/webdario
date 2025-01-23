@@ -1,5 +1,4 @@
 import express from 'express';
-import http from 'http';
 import corsLoader from "./loaders/corsLoader.js";
 import morganLoader from "./loaders/morganLoader.js";
 import mountRoutes from "./routes/index.js";
@@ -16,14 +15,11 @@ app.set('trust proxy', 1);
 app.use(express.json());
 morganLoader(app);
 corsLoader(app);
+connectionTracker(app);
 
 // Mount routes
 mountRoutes(app);
 
-// Create an HTTP server to track connections
-const server = http.createServer(app);
-connectionTracker(server);
-
-server.listen(port, () => {
+app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
