@@ -15,7 +15,7 @@
 
 /* Global Styles */
 * {
-  font-family: 'iA Writer Duospace', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'iA Writer Duospace', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -87,6 +87,34 @@ h1 {
   text-align: center;
 }
 
+.mobile-unmute-button {
+  color: #00FF9C;
+  font-size: 3rem;
+  text-align: center;
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  background: none;
+  border: none;
+  display: flex; /* Flexbox to center text */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.mobile-mute-button {
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  background: none;
+  border: none;
+  position: relative;
+}
+
+.mobile-mute-button-text {
+  position: fixed; /* Fixed position for the text */
+  top: 1%; /* 1% from the top */
+  left: 10px; /* 10px from the left */
+  color: #FFFFFF;
+}
+
 /* Links */
 a {
   color: #ff4081;
@@ -104,7 +132,7 @@ a:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.85); /* Darker overlay */
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,15 +142,15 @@ a:hover {
 
 /* Modal Content */
 .modal-content {
-  position: fixed; /* Fix modal position */
+  position: fixed;
   top: 30%;
   left: 50%;
-  transform: translateX(-50%); /* Center horizontally */
-  background-color: #282828; /* Dark background */
+  transform: translateX(-50%);
+  background-color: #282828;
   border-radius: 4px;
-  width: 500px; /* Compact width */
-  color: #ccc; /* Light gray text */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Soft shadow */
+  width: 500px;
+  color: #ccc;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
 }
 
 /* Search Input */
@@ -130,7 +158,7 @@ a:hover {
   padding: 12px 15px;
   width: 100%;
   border-radius: 4px;
-  background-color: #333; /* Dark background to match */
+  background-color: #333;
   color: #fff;
   font-size: 2rem;
   font-family: 'iA Writer Duospace', sans-serif;
@@ -157,7 +185,7 @@ a:hover {
 }
 
 .selected {
-  background-color: #faeb4e; /* Soft purple for selected items */
+  background-color: #faeb4e;
   color: #100d23;
-  font-weight: bold; /* Bold text for better emphasis */
+  font-weight: bold;
 }
