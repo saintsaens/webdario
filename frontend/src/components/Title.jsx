@@ -6,7 +6,7 @@ const Title = ({channelName}) => {
 
     return (
         <>
-            {!isMuted && <h1>{channelName}</h1>}
+            {!isMuted && <h1 className="channel-name">{channelName}</h1>}
         </>
     );
 };

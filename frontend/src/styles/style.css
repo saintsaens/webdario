@@ -1,3 +1,13 @@
+/* Define Color Palette */
+:root {
+  --text-color-white: #FFFFFF;
+  --text-color-black: #000000;
+  --first-color: #041C32;
+  --second-color: #04293A;
+  --third-color: #064663;
+  --fourth-color: #ECB365;
+}
+
 /* Font Definitions */
 @font-face {
   font-family: 'iA Writer Duospace';
@@ -15,17 +25,12 @@
 
 /* Global Styles */
 * {
-  font-family: 'iA Writer Duospace', sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  font-family: 'iA Writer Duospace', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
-  background-color: #100D23;
-  color: #FFFFFF;
-  font-family: 'iA Writer Duospace', sans-serif;
-  background-image: radial-gradient(circle at center center, lch(18 24 313), lch(7 11 300));
+  color: var(--text-color-white);
+  background-image: radial-gradient(circle at center center, var(--third-color), var(--first-color));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,11 +39,11 @@ body {
 }
 
 /* Heading Styles */
-h1 {
-  color: #c592ff;
-  opacity: 0.8;
+.channel-name {
+  color: var(--text-color-white);
   text-align: center;
   position: absolute;
+  opacity: 0.5;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -74,7 +79,7 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: lch(8 12 285);
+  background: var(--first-color);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -82,7 +87,7 @@ h1 {
 }
 
 .overlay-text {
-  color: #00FF9C;
+  color: var(--fourth-color);
   font-size: 3rem;
   text-align: center;
 }
@@ -115,9 +120,37 @@ h1 {
   color: #FFFFFF;
 }
 
+.mobile-unmute-button {
+  color: #00FF9C;
+  font-size: 3rem;
+  text-align: center;
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  background: none;
+  border: none;
+  display: flex; /* Flexbox to center text */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.mobile-mute-button {
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  background: none;
+  border: none;
+  position: relative;
+}
+
+.mobile-mute-button-text {
+  position: fixed; /* Fixed position for the text */
+  top: 1%; /* 1% from the top */
+  left: 10px; /* 10px from the left */
+  color: #FFFFFF;
+}
+
 /* Links */
 a {
-  color: #ff4081;
+  color: var(--text-color-white);
   text-decoration: none;
 }
 
@@ -142,24 +175,25 @@ a:hover {
 
 /* Modal Content */
 .modal-content {
-  position: fixed;
-  top: 30%;
+  position: fixed; /* Fix modal position */
+  top: 40%;
   left: 50%;
-  transform: translateX(-50%);
-  background-color: #282828;
+  transform: translateX(-50%); /* Center horizontally */
+  background-color: var(--first-color); /* Dark background */
   border-radius: 4px;
-  width: 500px;
-  color: #ccc;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+  width: 500px; /* Compact width */
+  color: var(--text-color-white); /* Light gray text */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); /* Soft shadow */
 }
 
 /* Search Input */
 .search-input {
+  box-sizing: border-box;
   padding: 12px 15px;
   width: 100%;
   border-radius: 4px;
-  background-color: #333;
-  color: #fff;
+  background-color: var(--first-color); /* Dark background */
+  color: var(--text-color-white);
   font-size: 2rem;
   font-family: 'iA Writer Duospace', sans-serif;
   outline: none;
@@ -181,11 +215,65 @@ a:hover {
   padding: 12px;
   font-family: 'iA Writer Duospace', sans-serif;
   font-size: 1.1rem;
-  color: #ddd;
+  color: var(--text-color-white);
 }
 
 .selected {
-  background-color: #faeb4e;
-  color: #100d23;
-  font-weight: bold;
+  background-color: var(--fourth-color); /* Soft purple for selected items */
+  color: var(--text-color-black); 
+  font-weight: bold; /* Bold text for better emphasis */
+}
+
+.top-right-image {
+  position: fixed;
+  top: 10px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
+  width: 150px; /* Adjust size as needed */
+  height: auto; /* Maintain aspect ratio */
+  z-index: 1000; /* Ensure it's on top */
+}
+
+.allegiance-container {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center all elements horizontally */
+  text-align: center; /* Center the text horizontally */
+}
+
+.allegiance-container h1 {
+  margin-bottom: 40px; /* Space between the title and the images */
+  font-size: 2.5rem; /* Adjust title size as needed */
+  opacity: 0.7; /* Lighten the title */
+}
+
+.allegiance-items {
+  display: flex;
+  align-items: center; /* Centers images vertically */
+  justify-content: center; /* Centers images horizontally */
+  gap: 10%; /* Adds space between images */
+}
+
+.allegiance-container img {
+  width: auto; /* Adjust as needed */
+  height: 300px; /* Maintain aspect ratio */
+  margin-bottom: 20%;
+}
+
+.allegiance-item {
+  text-align: center; /* Center align the caption */
+  padding: 40px;
+  border: 1px solid transparent;
+  border-radius: 8px; /* Optional: Rounded corners */
+  transition: border 0.3s ease-in-out; /* Smooth transition for border */
+}
+
+.allegiance-item:hover {
+  border-color: var(--fourth-color);
+  cursor: pointer;
+}
+
+.allegiance-item p {
+  margin-top: 10px; /* Add some space between the image and the caption */
+  font-size: 1.5rem; /* Adjust font size for the caption */
+  color: var(--fourth-color); /* Set the text color */
 }
