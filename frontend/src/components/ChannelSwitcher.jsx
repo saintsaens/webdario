@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -75,20 +76,20 @@ const ChannelSwitcher = () => {
     return (
         <>
             {isModalVisible && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
+                <div className="switcher-overlay">
+                    <div className="switcher-content">
                         <input
                             ref={searchInputRef} // Attach the ref to the input
                             type="text"
                             value={searchQuery}
                             onChange={handleSearchChange}
-                            className="search-input"
+                            className="switcher-search-input"
                         />
-                        <ul className="modal-list">
+                        <ul className="switcher-results">
                             {filteredItems.map((item, index) => (
                                 <li
                                     key={index}
-                                    className={`modal-list-item ${selectedIndex === index ? 'selected' : ''}`}
+                                    className={selectedIndex === index ? 'selected' : ''}
                                 >
                                     {item}
                                 </li>

@@ -11,15 +11,15 @@
 /* Font Definitions */
 @font-face {
   font-family: 'iA Writer Duospace';
-  src: url('./fonts/ia-writer-duospace/iAWriterDuospace-Regular.otf') format('opentype');
-  font-weight: normal;
+  src: url('./fonts/ia-writer-duospace/iAWriterDuospace-Bold.otf') format('opentype');
+  font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'iA Writer Duospace';
-  src: url('./fonts/ia-writer-duospace/iAWriterDuospace-Bold.otf') format('opentype');
-  font-weight: bold;
+  src: url('./fonts/ia-writer-duospace/iAWriterDuospace-Regular.otf') format('opentype');
+  font-weight: normal;
   font-style: normal;
 }
 
@@ -38,6 +38,10 @@ body {
   height: 100vh;
 }
 
+h1 {
+  font-weight: normal;
+}
+
 /* Heading Styles */
 .channel-name {
   color: var(--text-color-white);
@@ -47,33 +51,11 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-weight: normal;
 }
 
-/* Labels */
-.mute-label {
-  position: fixed;
-  top: 1%;
-  left: 10px;
-  opacity: 0.5;
-}
-
-
-.switch-label {
-  position: fixed;
-  top: 4%;
-  left: 10px;
-  opacity: 0.5;
-}
-
-.about-button {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  opacity: 0.5;
-}
-
-/* Overlay */
-.overlay {
+/* Unmute */
+.unmute-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -86,13 +68,13 @@ body {
   z-index: 1000;
 }
 
-.overlay-text {
+.unmute-text-web {
   color: var(--fourth-color);
   font-size: 3rem;
   text-align: center;
 }
 
-.mobile-unmute-button {
+.unmute-button-mobile {
   color: #00FF9C;
   font-size: 3rem;
   text-align: center;
@@ -105,7 +87,15 @@ body {
   align-items: center; /* Center vertically */
 }
 
-.mobile-mute-button {
+/* Mute */
+.mute-label, .escape {
+  position: fixed;
+  top: 1%;
+  left: 10px;
+  opacity: 0.5;
+}
+
+.mute-button-mobile {
   width: 100vw; /* Full viewport width */
   height: 100vh; /* Full viewport height */
   background: none;
@@ -113,39 +103,20 @@ body {
   position: relative;
 }
 
-.mobile-mute-button-text {
-  position: fixed; /* Fixed position for the text */
-  top: 1%; /* 1% from the top */
-  left: 10px; /* 10px from the left */
-  color: #FFFFFF;
+/* Switcher */
+.switch-label {
+  position: fixed;
+  top: 4%;
+  left: 10px;
+  opacity: 0.5;
 }
 
-.mobile-unmute-button {
-  color: #00FF9C;
-  font-size: 3rem;
-  text-align: center;
-  width: 100vw; /* Full viewport width */
-  height: 100vh; /* Full viewport height */
-  background: none;
-  border: none;
-  display: flex; /* Flexbox to center text */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-}
-
-.mobile-mute-button {
-  width: 100vw; /* Full viewport width */
-  height: 100vh; /* Full viewport height */
-  background: none;
-  border: none;
-  position: relative;
-}
-
-.mobile-mute-button-text {
-  position: fixed; /* Fixed position for the text */
-  top: 1%; /* 1% from the top */
-  left: 10px; /* 10px from the left */
-  color: #FFFFFF;
+/* About */
+.about-button {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  opacity: 0.5;
 }
 
 /* Links */
@@ -158,14 +129,13 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Modal Overlay */
-.modal-overlay {
+/* Switcher */
+.switcher-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.85); /* Darker overlay */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -173,8 +143,7 @@ a:hover {
   transition: opacity 0.3s ease-in-out;
 }
 
-/* Modal Content */
-.modal-content {
+.switcher-content {
   position: fixed; /* Fix modal position */
   top: 40%;
   left: 50%;
@@ -186,8 +155,7 @@ a:hover {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); /* Soft shadow */
 }
 
-/* Search Input */
-.search-input {
+.switcher-search-input {
   box-sizing: border-box;
   padding: 12px 15px;
   width: 100%;
@@ -200,18 +168,17 @@ a:hover {
   border: none;
 }
 
-.search-input:focus {
+.switcher-search-input:focus {
   outline: none;
 }
 
-/* List Styles */
-.modal-list {
+.switcher-results {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.modal-list-item {
+.switcher-results li {
   padding: 12px;
   font-family: 'iA Writer Duospace', sans-serif;
   font-size: 1.1rem;
@@ -219,18 +186,31 @@ a:hover {
 }
 
 .selected {
-  background-color: var(--fourth-color); /* Soft purple for selected items */
-  color: var(--text-color-black); 
-  font-weight: bold; /* Bold text for better emphasis */
+  background-color: var(--third-color);
 }
 
-.top-right-image {
+.avatar {
   position: fixed;
-  top: 10px; /* Adjust as needed */
-  right: 10px; /* Adjust as needed */
-  width: 150px; /* Adjust size as needed */
-  height: auto; /* Maintain aspect ratio */
+  top: 1.5%;
+  right: 20px; /* Adjust as needed */
+  width: auto;
+  height: 50px;
   z-index: 1000; /* Ensure it's on top */
+  opacity: 0.8;
+  display: block;
+  border-radius: 4px; /* Optional: Rounded corners */
+  transition: background-color 0.15s, transform 0.03s; /* Smooth transition for hover/click effects */
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.avatar:hover {
+  background-color: var(--third-color); /* Light grey hover effect */
+}
+
+.avatar:active {
+  background-color: var(--second-color); /* Slightly darker grey on click */
+  transform: scale(0.95); /* Reset scale on click */
 }
 
 .allegiance-container {
@@ -277,3 +257,90 @@ a:hover {
   font-size: 1.5rem; /* Adjust font size for the caption */
   color: var(--fourth-color); /* Set the text color */
 }
+
+.allegiance-welcome {
+  font-size: 1.4rem;
+  text-align: justify;
+  margin: 20px;
+  width: 900px;
+}
+
+.allegiance-welcome-buttons {
+  display: flex; /* Use flexbox */
+  justify-content: center; /* Center buttons horizontally */
+  gap: 20%; /* Add space between buttons */
+  margin-top: 50px; /* Optional: Add some spacing above the buttons */
+}
+
+.allegiance-welcome-button {
+  padding: 20px 40px; /* Add some padding */
+  font-size: 1.5rem; /* Adjust font size */
+  border: 1px solid var(--fourth-color); /* Optional: Border for style */
+  border-radius: 10px; /* Optional: Rounded corners */
+  cursor: pointer; /* Show pointer on hover */
+  width: 300px;
+  background-color: transparent;
+  color: var(--text-color-white);
+}
+
+.allegiance-welcome-button:hover {
+  background-color: var(--fourth-color);
+  color: var(--text-color-black);
+}
+
+.allegiance-welcome p {
+    opacity: 0; /* Initially hidden */
+    animation: fadeIn 1s ease-out forwards;
+  }
+  
+  .allegiance-welcome p:nth-child(1) {
+    animation-delay: 1.5s;
+  }
+  
+  .allegiance-welcome p:nth-child(2) {
+    animation-delay: 4s;
+  }
+  
+  .allegiance-welcome p:nth-child(3) {
+    animation-delay: 6.5s;
+  }
+  
+  /* Buttons have their own keyframes to reach full opacity */
+  .allegiance-welcome-buttons button {
+    opacity: 0; /* Initially hidden */
+    animation: fadeInFull 1s ease-out forwards;
+    animation-delay: 7.5s;
+}
+
+/* Common fade-in for paragraphs */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.5;
+    }
+}
+
+/* Custom fade-in for buttons */
+@keyframes fadeInFull {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .butler {
+    position: absolute;
+    top: 10%;
+    width: 100px;
+    height: auto;
+  }

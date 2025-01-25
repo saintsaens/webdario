@@ -33,8 +33,8 @@ const WebMuteToggler = ({ audioRef }) => {
   return (
     <>
       {isMuted && (
-        <div className="overlay">
-          <div className="overlay-text">
+        <div className="unmute-overlay">
+          <div className="unmute-text-web">
             {!error && 'K to unmute'}
           </div>
         </div>
