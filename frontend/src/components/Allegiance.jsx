@@ -2,9 +2,12 @@ import React from 'react';
 import Mortagne from "../styles/allegiances/mortagne-300.png";
 import Aurimont from "../styles/allegiances/aurimont-300.png";
 import Koroso from "../styles/allegiances/koroso-300.png";
+import Escape from "./Escape";
 
 const Allegiance = () => {
     return (
+        <>
+        <Escape />
         <div className="allegiance-container">
             <h1>Choose your allegiance</h1>
             <div className="allegiance-items">
@@ -22,6 +25,7 @@ const Allegiance = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 }
 

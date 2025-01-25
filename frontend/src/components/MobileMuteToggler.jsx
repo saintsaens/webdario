@@ -18,9 +18,9 @@ const MobileMuteToggler = ({ audioRef }) => {
     return (
         <>
             {isMuted && (
-                <div className="overlay">
+                <div className="unmute-overlay">
                     <button
-                        className="mobile-unmute-button"
+                        className="unmute-button-mobile"
                         onClick={handleToggleMute}
                     >
                         {!error && "Unmute"}
@@ -29,12 +29,10 @@ const MobileMuteToggler = ({ audioRef }) => {
             )}
             <div className="mute-label">
                 <button
-                    className="mobile-mute-button"
+                    className="mute-button-mobile"
                     onClick={handleToggleMute}
                 >
-                    <div className="mobile-mute-button-text">
-                        {!isMuted && 'Tap: mute'}
-                    </div>
+                    {!isMuted && 'Tap: mute'}
                 </button>
             </div>
         </>

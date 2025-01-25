@@ -1,10 +1,13 @@
 import React from 'react';
-import Koroso from "../styles/allegiances/koroso-300.png";
+import { Link } from "react-router-dom";
+import Butler from "../styles/allegiances/butler-300.png";
 
 const Avatar = () => {
     return (
         <>
-            <img src={Koroso} alt="Top Right" className="top-right-image" />
+            <Link to="/welcome">
+                <img src={Butler} alt="Top Right" className="avatar" />
+            </Link>
         </>
     );
 }
