@@ -23,7 +23,7 @@ const AllegianceWelcome = () => {
                     </Link>
                     <Link to="/remember">
                         <button className="butler-button">
-                            <p className="butler-button-text">Continue →</p>
+                            <p className="butler-button-text">Continue</p>
                         </button>
                     </Link>
 
