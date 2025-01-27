@@ -2,13 +2,17 @@ import React, { useEffect } from "react";
 import dashjs from "dashjs";
 import { computeStartTime } from "../utils/time.js";
 import { useDispatch, useSelector } from "react-redux";
-import { setMuted, setPlaylistDuration, checkStream } from "../store/features/audioPlayerSlice.js";
+import { setMuted, checkStream, setPlaying } from "../store/features/audioPlayerSlice.js";
+import MuteToggler from "./MuteToggler.jsx";
+import ChannelSwitcher from "./ChannelSwitcher.jsx";
+import Title from "./Title.jsx";
 
 const AudioPlayer = ({ audioRef, channelName }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const src = `${backendUrl}/${channelName}`;
   const playlistDuration = useSelector((state) => state.audioPlayer.playlistDuration);
   const error = useSelector((state) => state.audioPlayer.error);
+  const playing = useSelector((state) => state.audioPlayer.playing);
   const dispatch = useDispatch();
   let player = null; // Keep track of the Dash.js player instance
 
@@ -26,15 +30,12 @@ const AudioPlayer = ({ audioRef, channelName }) => {
       dispatch(setMuted(true));
       reloadPlayer(video, start);
     });
-
-    player.on(dashjs.MediaPlayer.events.PLAYBACK_METADATA_LOADED, () => {
-      const duration = player.duration();
-      // dispatch(setPlaylistDuration(duration));
+    player.on(dashjs.MediaPlayer.events.PLAYBACK_PLAYING, () => {
+      dispatch(setPlaying(true));
     });
   };
 
   const reloadPlayer = (video, start) => {
-    console.log("Reloading player…");
     cleanupPlayer();
     setupPlayer(video, start);
   };
@@ -71,7 +72,7 @@ const AudioPlayer = ({ audioRef, channelName }) => {
     return () => {
       cleanupPlayer(); // Ensure cleanup when the component unmounts or reinitializes
     };
-  }, [src, dispatch, playlistDuration]);
+  }, [src, dispatch]);
 
   if (error) {
     return (
@@ -81,7 +82,25 @@ const AudioPlayer = ({ audioRef, channelName }) => {
     );
   }
 
-  return <video ref={audioRef} />;
+  return (
+    <>
+      {!playing && (
+        <div className="overlay">
+          <div className="overlay-text">
+            Loading…
+          </div>
+        </div>
+      )}
+      <video ref={audioRef} />
+      {playing && (
+        <>
+          <Title channelName={channelName} />
+          <MuteToggler audioRef={audioRef} />
+          <ChannelSwitcher />
+        </>
+      )}
+    </>
+  );
 };
 
 export default AudioPlayer;
