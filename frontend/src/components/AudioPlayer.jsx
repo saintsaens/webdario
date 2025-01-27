@@ -3,6 +3,9 @@ import dashjs from "dashjs";
 import { computeStartTime } from "../utils/time.js";
 import { useDispatch, useSelector } from "react-redux";
 import { setMuted, checkStream, setPlaying } from "../store/features/audioPlayerSlice.js";
+import MuteToggler from "./MuteToggler.jsx";
+import ChannelSwitcher from "./ChannelSwitcher.jsx";
+import Title from "./Title.jsx";
 
 const AudioPlayer = ({ audioRef, channelName }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -90,6 +93,13 @@ const AudioPlayer = ({ audioRef, channelName }) => {
         </div>
       )}
       <video ref={audioRef} />
+      {playing && (
+        <>
+          <Title channelName={channelName} />
+          <MuteToggler audioRef={audioRef} />
+          <ChannelSwitcher />
+        </>
+      )}
     </>
   );
 };
