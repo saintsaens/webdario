@@ -36,7 +36,6 @@ const AudioPlayer = ({ audioRef, channelName }) => {
   };
 
   const reloadPlayer = (video, start) => {
-    console.log("Reloading player…");
     cleanupPlayer();
     setupPlayer(video, start);
   };
