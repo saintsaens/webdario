@@ -21,6 +21,7 @@ const audioPlayerSlice = createSlice({
     isMuted: true,
     playlistDuration: 241200,
     error: false,
+    playing: false,
   },
   reducers: {
     setMuted(state, action) {
@@ -31,6 +32,9 @@ const audioPlayerSlice = createSlice({
     },
     setError(state, action) {
       state.error = action.payload;
+    },
+    setPlaying(state, action) {
+      state.playing = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -44,5 +48,5 @@ const audioPlayerSlice = createSlice({
   },
 });
 
-export const { setMuted, setPlaylistDuration, setError } = audioPlayerSlice.actions;
+export const { setMuted, setPlaylistDuration, setError, setPlaying } = audioPlayerSlice.actions;
 export default audioPlayerSlice.reducer;

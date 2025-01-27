@@ -2,12 +2,14 @@ import React, { useEffect } from "react";
 import dashjs from "dashjs";
 import { computeStartTime } from "../utils/time.js";
 import { useDispatch, useSelector } from "react-redux";
+import { setMuted, checkStream, setPlaying } from "../store/features/audioPlayerSlice.js";
 
 const AudioPlayer = ({ audioRef, channelName }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const src = `${backendUrl}/${channelName}`;
   const playlistDuration = useSelector((state) => state.audioPlayer.playlistDuration);
   const error = useSelector((state) => state.audioPlayer.error);
+  const playing = useSelector((state) => state.audioPlayer.playing);
   const dispatch = useDispatch();
   let player = null; // Keep track of the Dash.js player instance
 
@@ -25,6 +27,8 @@ const AudioPlayer = ({ audioRef, channelName }) => {
       dispatch(setMuted(true));
       reloadPlayer(video, start);
     });
+    player.on(dashjs.MediaPlayer.events.PLAYBACK_PLAYING, () => {
+      dispatch(setPlaying(true));
     });
   };
 
@@ -76,7 +80,18 @@ const AudioPlayer = ({ audioRef, channelName }) => {
     );
   }
 
-  return <video ref={audioRef} />;
+  return (
+    <>
+      {!playing && (
+        <div className="overlay">
+          <div className="overlay-text">
+            Loading…
+          </div>
+        </div>
+      )}
+      <video ref={audioRef} />
+    </>
+  );
 };
 
 export default AudioPlayer;
