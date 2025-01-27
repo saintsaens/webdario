@@ -1,5 +1,4 @@
 .champions-title {
-    opacity: 0.5;
     margin: 70px;
 }
 
@@ -89,7 +88,19 @@
     color: var(--text-color-black);
 }
 
-/* BUTLER PAGES ANIMATIONS */
+/* ANIMATIONS */
+
+.champions-title {
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 1s;
+}
+
+.champions {
+    opacity: 0;
+    animation: fadeInFull 2s ease-in forwards;
+    animation-delay: 3s;
+}
 
 .butler-text p {
     opacity: 0;
