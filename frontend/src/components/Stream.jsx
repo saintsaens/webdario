@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import Title from "./Title";
 import AudioPlayer from "./AudioPlayer";
-import ChannelSwitcher from "./ChannelSwitcher";
+import Avatar from "./Avatar";
 import { setCurrentChannel } from "../store/features/channelSwitcherSlice";
 import { useDispatch } from "react-redux";
 
-const Stream = ({channelName}) => {
+const Stream = ({ channelName }) => {
     const audioRef = useRef(null);
     const dispatch = useDispatch();
 
@@ -15,6 +14,7 @@ const Stream = ({channelName}) => {
 
     return (
         <>
+            <Avatar />
             <AudioPlayer audioRef={audioRef} channelName={channelName} />
         </>
     );

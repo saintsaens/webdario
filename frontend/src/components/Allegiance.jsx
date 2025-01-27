@@ -7,24 +7,26 @@ import Escape from "./Escape";
 const Allegiance = () => {
     return (
         <>
-        <Escape />
-        <div className="allegiance-container">
-            <h1>Choose your allegiance</h1>
-            <div className="allegiance-items">
-                <div className="allegiance-item">
-                    <img src={Mortagne} alt="Mortagne" />
-                    <p>Mortagne,<br /> the Scholar</p>
-                </div>
-                <div className="allegiance-item">
-                    <img src={Aurimont} alt="Aurimont" />
-                    <p>Aurimont,<br /> the Eloquent</p>
-                </div>
-                <div className="allegiance-item">
-                    <img src={Koroso} alt="Koroso" />
-                    <p>Koroso,<br /> the Wise</p>
+            <Escape />
+            <div className="butler-container">
+                <h1 className="champions-title">
+                    Choose your allegiance
+                </h1>
+                <div className="champions">
+                    <div className="champion">
+                        <img src={Mortagne} alt="Mortagne" className="champion-img" />
+                        <p className="champion-text">Mortagne,<br /> the Scholar</p>
+                    </div>
+                    <div className="champion">
+                        <img src={Aurimont} alt="Aurimont" className="champion-img" />
+                        <p className="champion-text">Aurimont,<br /> the Eloquent</p>
+                    </div>
+                    <div className="champion">
+                        <img src={Koroso} alt="Koroso" className="champion-img" />
+                        <p className="champion-text">Koroso,<br /> the Wise</p>
+                    </div>
                 </div>
             </div>
-        </div>
         </>
     );
 }

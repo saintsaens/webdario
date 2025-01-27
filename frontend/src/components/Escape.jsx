@@ -22,7 +22,7 @@ const Escape = () => {
 
     return (
         <div className="escape">
-            X (Esc)
+            Esc
         </div>
     );
 };
