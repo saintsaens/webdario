@@ -7,20 +7,24 @@ const AllegianceRemember = () => {
     return (
         <>
             <Escape />
-            <div className="container">
-                <Butler className="butler" />
-                <div className="allegiance-welcome">
+            <div className="butler-container">
+                <Butler />
+                <div className="butler-text">
                     <p>Remember.</p>
                     <p>All they’re offering is stats.</p>
                     <p>Nothing more.</p>
-                    <div className="allegiance-welcome-buttons">
-                        <Link to="/">
-                            <button className="allegiance-welcome-button">Leave</button>
-                        </Link>
-                        <Link to="/allegiance">
-                            <button className="allegiance-welcome-button">Pay tribute →</button>
-                        </Link>
-                    </div>
+                </div>
+                <div className="butler-buttons">
+                    <Link to="/">
+                        <button className="butler-button">
+                            <p className="butler-button-text">Leave</p>
+                        </button>
+                    </Link>
+                    <Link to="/allegiance">
+                        <button className="butler-button">
+                            <p className="butler-button-text">Pay tribute →</p>
+                        </button>
+                    </Link>
                 </div>
             </div>
         </>

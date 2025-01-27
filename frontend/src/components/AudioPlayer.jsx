@@ -85,8 +85,8 @@ const AudioPlayer = ({ audioRef, channelName }) => {
   return (
     <>
       {!playing && (
-        <div className="overlay">
-          <div className="overlay-text">
+        <div className="unmute-overlay">
+          <div className="unmute-text-web">
             Loading…
           </div>
         </div>
