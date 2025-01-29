@@ -76,8 +76,10 @@ const AudioPlayer = ({ audioRef, channelName }) => {
 
   if (error) {
     return (
-      <div className="overlay-text">
-        Coudradio not available right now.
+      <div className="unmute-overlay">
+        <div className="unmute-text-web">
+          Coudradio not available right now.
+        </div>
       </div>
     );
   }
