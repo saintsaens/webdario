@@ -8,7 +8,12 @@ const About = () => {
       color="neutral"
       target="_blank"
       rel="noopener noreferrer"
-      className="about-button">
+      sx={{
+        position: "fixed",
+        bottom: 10,
+        right: 10,
+      }}
+    >
       About →
     </Link>
   );
