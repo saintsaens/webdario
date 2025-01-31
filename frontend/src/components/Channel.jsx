@@ -9,6 +9,8 @@ import Title from "./Title";
 import ChannelSwitcher from "./Commands/ChannelSwitcher";
 import Loading from "./Loading";
 import Unavailable from "./Unavailable";
+import Stack from "@mui/joy/Stack";
+
 
 const Stream = ({ channelName }) => {
     const audioRef = useRef(null);
@@ -25,7 +27,7 @@ const Stream = ({ channelName }) => {
             <Unavailable />
         );
     }
-    
+
     return (
         <>
             <AudioPlayer audioRef={audioRef} channelName={channelName} />
@@ -33,13 +35,30 @@ const Stream = ({ channelName }) => {
                 <Loading />
             )}
             {playing && (
-                <>
-                    <Avatar />
+                <Stack
+                    spacing={2}
+                    sx={{
+                        height: "100%",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}
+                >
+                    <Stack
+                        direction="row"
+                        spacing={2}
+                        sx={{
+                            width: "100%",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                        }}
+                    >
+                        <MuteToggler audioRef={audioRef} />
+                        <Avatar />
+                    </Stack >
                     <Title channelName={channelName} />
-                    <MuteToggler audioRef={audioRef} />
-                    <ChannelSwitcher />
                     <About />
-                </>
+                    <ChannelSwitcher />
+                </Stack >
             )}
         </>
     );
