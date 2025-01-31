@@ -119,16 +119,6 @@ h1 {
   opacity: 0.5;
 }
 
-/* Links */
-a {
-  color: var(--text-color-white);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
 /* Switcher */
 .switcher-overlay {
   position: fixed;
