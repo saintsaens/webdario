@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { setMuted } from "../store/features/audioPlayerSlice";
+import { setMuted } from "../../store/features/audioPlayerSlice";
+import WebCommands from "./WebCommands";
 
 const WebMuteToggler = ({ audioRef }) => {
   const isMuted = useSelector((state) => state.audioPlayer.isMuted);
@@ -39,12 +40,7 @@ const WebMuteToggler = ({ audioRef }) => {
           </div>
         </div>
       )}
-      <div className="mute-label">
-        {!isMuted && 'K: mute'}
-      </div>
-      <div className="switch-label">
-        {!isMuted && '⌘+K: switcher'}
-      </div>
+      <WebCommands />
     </>
   );
 };

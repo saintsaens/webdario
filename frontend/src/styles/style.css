@@ -38,26 +38,6 @@ body {
   height: 100vh;
 }
 
-/* Unmute */
-.unmute-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--first-color);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.unmute-text-web {
-  color: var(--fourth-color);
-  font-size: 3rem;
-  text-align: center;
-}
-
 .unmute-button-mobile {
   color: #00FF9C;
   font-size: 3rem;
@@ -69,14 +49,6 @@ body {
   display: flex; /* Flexbox to center text */
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
-}
-
-/* Mute */
-.mute-label, .escape {
-  position: fixed;
-  top: 1%;
-  left: 10px;
-  opacity: 0.5;
 }
 
 .mute-button-mobile {

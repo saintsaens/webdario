@@ -1,7 +1,7 @@
 import React from 'react';
 import Butler from "./Butler";
 import { Link } from "react-router-dom";
-import Escape from "./Escape";
+import Escape from "./Commands/Escape";
 import "../styles/allegiance.css";
 
 const AllegianceWelcome = () => {

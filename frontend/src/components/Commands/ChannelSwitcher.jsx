@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setSelectedIndex } from "../store/features/channelSwitcherSlice";
+import { setSelectedIndex } from "../../store/features/channelSwitcherSlice";
 
 const ChannelSwitcher = () => {
     const currentChannel = useSelector((state) => state.channelSwitcher.currentChannel);
