@@ -2,6 +2,8 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Channel from "./Channel";
 import Allegiance from "./Allegiance";
+import Pay from "./Pay";
+import Stats from "./Stats";
 import AllegianceWelcome from "./AllegianceWelcome";
 import AllegianceRemember from "./AllegianceRemember";
 
@@ -14,6 +16,8 @@ function AppRoutes() {
             <Route path="/welcome" element={<AllegianceWelcome />} />
             <Route path="/remember" element={<AllegianceRemember />} />
             <Route path="/allegiance" element={<Allegiance />} />
+            <Route path="/pay" element={<Pay />} />
+            <Route path="/stats" element={<Stats />} />
         </Routes>
     );
 };

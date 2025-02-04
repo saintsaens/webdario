@@ -8,7 +8,7 @@ const Title = ({ channelName }) => {
     return (
         !isMuted && (
             <Typography
-                variant="h2"
+                variant="h4"
             >
                 {channelName}
             </Typography>
