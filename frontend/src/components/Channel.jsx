@@ -1,18 +1,20 @@
 import React, { useEffect, useRef } from 'react';
 import AudioPlayer from "./AudioPlayer";
-import Avatar from "./Avatar";
+import Avatar from "./Header/Avatar";
 import { setCurrentChannel } from "../store/features/channelSwitcherSlice";
 import { useDispatch, useSelector } from "react-redux";
-import About from "./About";
+import About from "./Footer/About";
 import MuteToggler from "./Commands/MuteToggler";
-import Title from "./Title";
+import Title from "./Body/Title";
 import ChannelSwitcher from "./Commands/ChannelSwitcher";
 import Loading from "./Loading";
 import Unavailable from "./Unavailable";
-import Stack from "@mui/joy/Stack";
+import Stack from "@mui/material/Stack";
+import Background from "./Background";
+import ChannelContainer from "./ChannelContainer";
 
 
-const Stream = ({ channelName }) => {
+export default function Channel({ channelName }) {
     const audioRef = useRef(null);
     const playing = useSelector((state) => state.audioPlayer.playing);
     const error = useSelector((state) => state.audioPlayer.error);
@@ -30,38 +32,21 @@ const Stream = ({ channelName }) => {
 
     return (
         <>
-            <AudioPlayer audioRef={audioRef} channelName={channelName} />
+
+            <Background>
+                <AudioPlayer audioRef={audioRef} channelName={channelName} />
+            </Background>
+
             {!playing && (
                 <Loading />
             )}
+
             {playing && (
-                <Stack
-                    spacing={2}
-                    sx={{
-                        height: "100%",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                    }}
-                >
-                    <Stack
-                        direction="row"
-                        spacing={2}
-                        sx={{
-                            width: "100%",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                        }}
-                    >
-                        <MuteToggler audioRef={audioRef} />
-                        <Avatar />
-                    </Stack >
-                    <Title channelName={channelName} />
-                    <About />
+                <>
+                    <ChannelContainer channelName={channelName} />
                     <ChannelSwitcher />
-                </Stack >
+                </>
             )}
         </>
     );
-};
-
-export default Stream;
+}

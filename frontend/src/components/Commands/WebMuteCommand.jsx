@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Typography from "@mui/joy/Typography";
+import Typography from "@mui/material/Typography";
 
 const WebMuteCommand = () => {
   const isMuted = useSelector((state) => state.audioPlayer.isMuted);
@@ -8,7 +8,7 @@ const WebMuteCommand = () => {
   if (isMuted) return null;
 
   return (
-      <Typography color="neutral">K: mute</Typography>
+      <Typography>K: mute</Typography>
   );
 };
 

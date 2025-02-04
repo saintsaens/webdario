@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Typography from "@mui/joy/Typography";
+import Typography from "@mui/material/Typography";
 
 const Title = ({ channelName }) => {
     const isMuted = useSelector((state) => state.audioPlayer.isMuted);
@@ -8,7 +8,7 @@ const Title = ({ channelName }) => {
     return (
         !isMuted && (
             <Typography
-                level="h1"
+                variant="h2"
             >
                 {channelName}
             </Typography>
