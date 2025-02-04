@@ -1,11 +1,11 @@
 import React from 'react';
-import Link from '@mui/joy/Link';
+import Link from '@mui/material/Link';
 
 const About = () => {
   return (
     <Link
+      variant="body1"
       href="https://flavienrobert.notion.site/About-Coudradio-18086814da2780f8aa1bd29d6f9ac6b2"
-      color="neutral"
       target="_blank"
       rel="noopener noreferrer"
     >

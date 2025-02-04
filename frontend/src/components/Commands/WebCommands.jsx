@@ -1,7 +1,7 @@
 import React from 'react';
 import WebMuteCommand from "./WebMuteCommand";
 import WebSwitcherCommand from "./WebSwitcherCommand";
-import Stack from "@mui/joy/Stack";
+import Stack from "@mui/material/Stack";
 
 const WebCommands = () => {
   return (

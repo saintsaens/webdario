@@ -23,9 +23,17 @@
   font-style: normal;
 }
 
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
 body {
-  color: var(--text-color-white);
   background-image: radial-gradient(circle at center center, var(--third-color), var(--first-color));
+}
+
+* {
+  font-family: "iA Writer Duospace", sans-serif;
 }
 
 .unmute-button-mobile {
