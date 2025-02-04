@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 
-export default function Background({ children, sx, ...props }){
+export default function Background({ children }){
   return (
     <Box
       sx={{
@@ -11,9 +11,7 @@ export default function Background({ children, sx, ...props }){
         width: "100%",
         height: "100%",
         zIndex: -1, // Ensures it stays behind everything
-        ...sx, // Allow additional styles to override the default ones
       }}
-      {...props}
     >
       {children}
     </Box>

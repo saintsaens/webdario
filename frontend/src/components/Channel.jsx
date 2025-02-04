@@ -43,8 +43,7 @@ export default function Channel({ channelName }) {
 
             {playing && (
                 <>
-                    <ChannelContainer channelName={channelName} />
-                    <ChannelSwitcher />
+                    <MuteToggler audioRef={audioRef} channelName={channelName} />
                 </>
             )}
         </>

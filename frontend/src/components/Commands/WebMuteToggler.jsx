@@ -2,10 +2,12 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { setMuted } from "../../store/features/audioPlayerSlice";
 import WebCommands from "./WebCommands";
+import WebUnmuteCommand from "./WebUnmuteCommand";
+import ChannelSwitcher from "./ChannelSwitcher";
+import ChannelContainer from "../ChannelContainer";
 
-const WebMuteToggler = ({ audioRef }) => {
+const WebMuteToggler = ({ audioRef, channelName }) => {
   const isMuted = useSelector((state) => state.audioPlayer.isMuted);
-  const error = useSelector((state) => state.audioPlayer.error);
   const dispatch = useDispatch();
 
   const handleToggleMute = () => {
@@ -21,26 +23,25 @@ const WebMuteToggler = ({ audioRef }) => {
       if (!(event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         handleToggleMute();
       }
-
     };
 
     document.addEventListener('keydown', handleKeyPress);
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
-    }
+    };
   }, [audioRef]);
-
 
   return (
     <>
-      {isMuted && (
-        <div className="unmute-overlay">
-          <div className="unmute-text-web">
-            {!error && 'K to unmute'}
-          </div>
-        </div>
-      )}
-      <WebCommands />
+      {isMuted
+        ?
+        <WebUnmuteCommand />
+        :
+        <>
+          <ChannelContainer channelName={channelName} />
+          <ChannelSwitcher />
+        </>
+      }
     </>
   );
 };

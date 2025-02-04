@@ -1,69 +1,65 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setSelectedIndex } from "../../store/features/channelSwitcherSlice";
+import { Dialog, DialogContent, TextField, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 
 const ChannelSwitcher = () => {
     const currentChannel = useSelector((state) => state.channelSwitcher.currentChannel);
     const selectedIndex = useSelector((state) => state.channelSwitcher.selectedIndex);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [searchQuery, setSearchQuery] = useState(''); // Track search input
+    const [searchQuery, setSearchQuery] = useState('');
 
     const listItems = ['lofi', 'coudrier'];
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // Processed list: sort alphabetically and move currentChannel to the bottom
     const processedItems = [...listItems]
-        .sort((a, b) => a.localeCompare(b)) // Sort alphabetically
-        .filter((item) => item !== currentChannel) // Exclude currentChannel temporarily
-        .concat(currentChannel ? [currentChannel] : []); // Append currentChannel if it exists
+        .sort((a, b) => a.localeCompare(b))
+        .filter((item) => item !== currentChannel)
+        .concat(currentChannel ? [currentChannel] : []);
 
-    // Filter list items based on the search query
     const filteredItems = processedItems.filter((item) =>
         item.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const searchInputRef = useRef(null); // Reference for the search input field
+    const searchInputRef = useRef(null);
 
     const handleKeyPress = (event) => {
-        const isCmdK = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k'; // Detect Cmd + K or Ctrl + K
+        const isCmdK = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k';
 
         if (isModalVisible) {
             if (event.key === 'ArrowDown') {
-                dispatch(setSelectedIndex((selectedIndex + 1) % filteredItems.length)); // Wrap around for down
+                dispatch(setSelectedIndex((selectedIndex + 1) % filteredItems.length));
             } else if (event.key === 'ArrowUp') {
                 dispatch(setSelectedIndex(
-                    (selectedIndex - 1 + filteredItems.length) % filteredItems.length // Wrap around for up
+                    (selectedIndex - 1 + filteredItems.length) % filteredItems.length
                 ));
             } else if (event.key === 'Enter') {
-                navigate(`/${filteredItems[selectedIndex]}`); // Navigate to the selected channel
-                setIsModalVisible(false); // Close modal after navigation
+                navigate(`/${filteredItems[selectedIndex]}`);
+                setIsModalVisible(false);
             } else if (event.key === 'Escape') {
-                setIsModalVisible(false); // Close modal on Escape
-                dispatch(setSelectedIndex(0)); // Reset selected index
+                setIsModalVisible(false);
+                dispatch(setSelectedIndex(0));
             }
         }
         if (isCmdK) {
-            event.preventDefault(); // Prevent default Cmd + K behavior
-            setIsModalVisible((prevState) => !prevState); // Toggle modal visibility
+            event.preventDefault();
+            setIsModalVisible((prevState) => !prevState);
         }
     };
 
     const handleSearchChange = (event) => {
-        setSearchQuery(event.target.value); // Update search query
+        setSearchQuery(event.target.value);
     };
 
     useEffect(() => {
         document.addEventListener('keydown', handleKeyPress);
 
-        // Reset search field when the modal is toggled
         if (!isModalVisible) {
-            setSearchQuery(''); // Clear search field when modal opens
+            setSearchQuery('');
         }
 
-        // Focus the search bar when the modal is visible
         if (isModalVisible && searchInputRef.current) {
             searchInputRef.current.focus();
         }
@@ -71,34 +67,42 @@ const ChannelSwitcher = () => {
         return () => {
             document.removeEventListener('keydown', handleKeyPress);
         };
-    }, [isModalVisible, filteredItems]); // Re-run effect when modal visibility changes
+    }, [isModalVisible, filteredItems]);
 
     return (
-        <>
-            {isModalVisible && (
-                <div className="switcher-overlay">
-                    <div className="switcher-content">
-                        <input
-                            ref={searchInputRef} // Attach the ref to the input
-                            type="text"
-                            value={searchQuery}
-                            onChange={handleSearchChange}
-                            className="switcher-search-input"
-                        />
-                        <ul className="switcher-results">
-                            {filteredItems.map((item, index) => (
-                                <li
-                                    key={index}
-                                    className={selectedIndex === index ? 'selected' : ''}
-                                >
-                                    {item}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-            )}
-        </>
+        <Dialog open={isModalVisible} onClose={() => setIsModalVisible(false)}
+            sx={{
+            }}>
+            <DialogContent
+                sx={{
+                    padding: 0,
+                    width: 500,
+                }}
+            >
+                <TextField
+                    inputRef={searchInputRef}
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    fullWidth
+                    autoFocus
+                    sx={{
+                    }}
+                />
+                <List>
+                    {filteredItems.map((item, index) => (
+                        <ListItem key={index} disablePadding>
+                            <ListItemButton
+                                selected={selectedIndex === index}
+                            >
+                                <ListItemText 
+                                primary={item}
+                                />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
+            </DialogContent>
+        </Dialog>
     );
 };
 

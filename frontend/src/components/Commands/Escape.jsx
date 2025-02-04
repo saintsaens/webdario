@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Box, Typography } from "@mui/material";
 
 const Escape = () => {
     const navigate = useNavigate();
@@ -12,18 +13,19 @@ const Escape = () => {
         };
 
         window.addEventListener("keydown", handleKeyDown);
-
-        // Cleanup event listener on unmount
-        return () => {
-            window.removeEventListener("keydown", handleKeyDown);
-        };
+        return () => window.removeEventListener("keydown", handleKeyDown);
     }, [navigate]);
 
-
     return (
-        <div className="escape">
-            Esc
-        </div>
+        <Box
+            sx={{
+                position: "fixed",
+                top: 16,
+                left: 16,
+            }}
+        >
+            <Typography variant="body2">Esc</Typography>
+        </Box>
     );
 };
 

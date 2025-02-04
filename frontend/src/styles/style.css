@@ -28,10 +28,6 @@ html, body, #root {
   margin: 0;
 }
 
-body {
-  background-image: radial-gradient(circle at center center, var(--third-color), var(--first-color));
-}
-
 * {
   font-family: "iA Writer Duospace", sans-serif;
 }

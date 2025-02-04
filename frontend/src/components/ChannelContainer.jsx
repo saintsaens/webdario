@@ -27,7 +27,7 @@ export default function ChannelContainer({ channelName }) {
                     height: "20%"
                 }}
             >
-                <Avatar />
+                {/* <Avatar /> */}
             </Grid>
             <Grid
                 size={12}
