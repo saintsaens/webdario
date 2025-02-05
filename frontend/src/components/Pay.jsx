@@ -19,7 +19,7 @@ const Pay = () => {
                     justifyItems: "center",
                     alignContent: "center",
                 }}>
-                <Typography variant="h4">
+                <Typography variant="h4" sx={{ padding: 4 }}>  
                     Know your listening time
                 </Typography>
                 <Card variant="outlined">
