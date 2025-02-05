@@ -1,6 +1,6 @@
 import db from '../db-users/index.js';
 
-export const createUser = async (username, hashedPw, role = "user") => {
+export const createUser = async (username, hashedPw, role) => {
     const query = `
         INSERT INTO users (username, hashed_pw, role)
         VALUES ($1, $2, $3)

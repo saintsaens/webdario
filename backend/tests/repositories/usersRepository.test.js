@@ -10,10 +10,10 @@ vi.mock('../../db-users/index.js', () => {
 });
 
 test("createUser inserts a user and returns id, username", async () => {
-  const mockUser = { id: 1, username: "testuser" };
+  const mockUser = { id: 1, username: "testuser", role: "user" };
   vi.mocked(db.query).mockResolvedValueOnce({ rows: [mockUser] });
 
-  const result = await createUser("testuser", "hashedpassword");
+  const result = await createUser("testuser", "hashedpassword", "user");
 
   expect(db.query).toHaveBeenCalledWith(
     expect.stringMatching(/INSERT INTO users/),
