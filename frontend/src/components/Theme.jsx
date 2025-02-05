@@ -9,8 +9,16 @@ export const theme = createTheme({
     secondary: {
       main: '#ECB365',
     },
+    text: {
+      primary: '#ECB365',
+      secondary: '#041c32',
+    },
+    background: {
+      default: '#041C32',
+      paper: '#02101F',
+    },
   },
   typography: {
-    fontFamily: "iA Writer Duospace"
+    fontFamily: "iA Writer Duospace",
   }
 });

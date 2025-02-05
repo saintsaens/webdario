@@ -14,7 +14,7 @@ const WebUnmuteCommand = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.6)",
+        backgroundColor: "background.paper",
         zIndex: 1000,
       }}
     >
