@@ -11,7 +11,7 @@ export const createUser = async (username, hashedPw, role = "user") => {
 };
 
 export const getUserById = async (id) => {
-    return query('SELECT id, username, role FROM users WHERE id = $1;', [id]);
+    return db.query('SELECT id, username, role FROM users WHERE id = $1;', [id]);
 };
 
 export const updateUser = async (id, username, hashedPw) => {
@@ -23,9 +23,9 @@ export const updateUser = async (id, username, hashedPw) => {
       WHERE id = $3
       RETURNING *;
     `;
-    return query(queryStr, [username || null, hashedPw || null, id]);
+    return db.query(queryStr, [username || null, hashedPw || null, id]);
 };
 
 export const deleteUser = async (id) => {
-    return query('DELETE FROM users WHERE id = $1 RETURNING *;', [id]);
+    return db.query('DELETE FROM users WHERE id = $1 RETURNING *;', [id]);
 };
