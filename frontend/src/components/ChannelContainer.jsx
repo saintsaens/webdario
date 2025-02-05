@@ -5,6 +5,7 @@ import Footer from "./Footer/Footer";
 import Grid from '@mui/material/Grid2';
 import WebCommands from "./Commands/WebCommands";
 import Avatar from "./Header/Avatar";
+import AuthButtons from "./Header/AuthButtons";
 
 export default function ChannelContainer({ channelName }) {
     return (
@@ -27,7 +28,7 @@ export default function ChannelContainer({ channelName }) {
                     height: "20%"
                 }}
             >
-                {/* <Avatar /> */}
+                <AuthButtons />
             </Grid>
             <Grid
                 size={12}
