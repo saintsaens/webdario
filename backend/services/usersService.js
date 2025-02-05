@@ -4,8 +4,8 @@ import * as usersRepository from "../repositories/usersRepository.js"
 const saltRounds = 10;
 
 export const createUser = async (username, password, role = "user") => {
-    const hashedPassword = password;
-    const result = await usersRepository.createUser(username, hashedPassword, role);
+    const hashedPw = password ? await bcrypt.hash(password, saltRounds) : null;
+    const result = await usersRepository.createUser(username, hashedPw, role);
 
     return result.rows;
 };
