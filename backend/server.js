@@ -4,6 +4,8 @@ import morganLoader from "./loaders/morganLoader.js";
 import mountRoutes from "./routes/index.js";
 import dotenv from 'dotenv';
 import { connectionTracker } from "./loaders/connectionTracker.js";
+import sessionLoader from "./loaders/sessionLoader.js";
+import passportLoader from "./loaders/passportLoader.js";
 
 dotenv.config();
 
@@ -16,6 +18,8 @@ app.use(express.json());
 morganLoader(app);
 corsLoader(app);
 connectionTracker(app);
+sessionLoader(app);
+passportLoader(app);
 
 // Mount routes
 mountRoutes(app);
