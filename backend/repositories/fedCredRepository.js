@@ -1,10 +1,10 @@
 import db from '../db-users/index.js';
 
-const databaseName = `federated_credentials`;
+const tableName = `federated_credentials`;
 
 export const createFederatedCredential = async (userId, provider, subject) => {
     const query = `
-        INSERT INTO ${databaseName} (user_id, provider, subject)
+        INSERT INTO ${tableName} (user_id, provider, subject)
         VALUES ($1, $2, $3)
         RETURNING id, user_id, provider, subject;
     `;
@@ -15,7 +15,7 @@ export const createFederatedCredential = async (userId, provider, subject) => {
 export const getFederatedCredential = async (provider, subject) => {
     const query = `
         SELECT id, user_id, provider, subject
-        FROM ${databaseName}
+        FROM ${tableName}
         WHERE provider = $1 AND subject = $2;
     `;
     const { rows } = await db.query(query, [provider, subject]);
@@ -24,7 +24,7 @@ export const getFederatedCredential = async (provider, subject) => {
 
 export const updateFederatedCredential = async (id, userId, provider, subject) => {
     const query = `
-        UPDATE ${databaseName}
+        UPDATE ${tableName}
         SET 
             user_id = COALESCE($1, user_id),
             provider = COALESCE($2, provider),
@@ -38,7 +38,7 @@ export const updateFederatedCredential = async (id, userId, provider, subject) =
 
 export const deleteFederatedCredential = async (id) => {
     const query = `
-        DELETE FROM ${databaseName}
+        DELETE FROM ${tableName}
         WHERE id = $1
         RETURNING id, user_id, provider, subject;
     `;
