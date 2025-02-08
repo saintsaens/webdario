@@ -15,8 +15,6 @@ const passportLoader = (app) => {
         scope: ["profile", "email"]
     }, async function verify(accessToken, refreshToken, profile, cb) {
         try {
-            console.log("Authorization Code:", accessToken);
-            console.log("Profile Data:", profile);
             if (!profile || !profile.id) {
                 throw new Error("Google profile is undefined or missing ID");
             }
