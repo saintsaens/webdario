@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
 import { fetchUser } from "../store/features/userSlice";
+import { Typography, Stack, Button } from "@mui/material";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 const REDIRECT_URI = `${import.meta.env.VITE_BACKEND_URL}/auth/oauth2/redirect/google`;
@@ -19,9 +19,9 @@ const handleLogout = async () => {
             credentials: "include",
         });
         if (response.ok) {
-            alert("Logged out successfully");
+            window.location.reload(); // Ensure UI updates on logout
         } else {
-            alert("Logout failed");
+            console.log("Logout failed");
         }
     } catch (error) {
         console.error("Logout error:", error);
@@ -31,16 +31,25 @@ const handleLogout = async () => {
 export default function AuthLinks() {
     const dispatch = useDispatch();
     const { username } = useSelector((state) => state.user);
-  
+
     useEffect(() => {
-      dispatch(fetchUser());
+        dispatch(fetchUser());
     }, [dispatch]);
 
     return (
-        <div>
-            <a href="#" onClick={(e) => { e.preventDefault(); handleLogin(); }}>Login</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); handleLogout(); }}>Logout</a>
-            <p>{`Hello, ${username}`}</p>
-        </div>
+        <Stack direction="row" spacing={2} alignItems="center">
+            {username ? (
+                <>
+                    <Typography variant="body1">{`Logged in as ${username}.`}</Typography>
+                    <Button variant="contained" onClick={handleLogout}>
+                        Logout
+                    </Button>
+                </>
+            ) : (
+                <Button variant="contained" color="primary" onClick={handleLogin}>
+                    Login with Google
+                </Button>
+            )}
+        </Stack>
     );
 }
