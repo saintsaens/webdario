@@ -7,24 +7,26 @@ import { getUserById } from "../services/usersService.js";
 const passportLoader = (app) => {
     app.use(passport.initialize());
     app.use(passport.session());
-    
+
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: `${process.env.BACKEND_URL}/auth/oauth2/redirect/google`,
         scope: ["profile", "email"]
-    }, async function verify(accessToken, refreshToken, profile, cb) {  
+    }, async function verify(accessToken, refreshToken, profile, cb) {
         try {
+            console.log("Authorization Code:", accessToken);
+            console.log("Profile Data:", profile);
             if (!profile || !profile.id) {
                 throw new Error("Google profile is undefined or missing ID");
             }
-    
+
             // Check if federated credentials exist
             const credentials = await getGoogleCredential(profile)
-            
+
             if (!credentials) {
                 // User does not exist, create one
-                const {id, username, subject, provider} = await createGoogleCredential(profile);
+                const { id, username, subject, provider } = await createGoogleCredential(profile);
                 return cb(null, { id, username, subject, provider });
             } else {
                 // User exists, fetch their info
