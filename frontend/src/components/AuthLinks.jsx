@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchUser } from "../store/features/userSlice";
 
-const GOOGLE_CLIENT_ID = "218284380496-79rim174f6gdvoh0c1hicmu07j5jcmd4.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 const REDIRECT_URI = `${import.meta.env.VITE_BACKEND_URL}/auth/oauth2/redirect/google`;
 
 
