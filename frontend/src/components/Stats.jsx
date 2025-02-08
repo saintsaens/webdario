@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography } from '@mui/material';
 import Escape from "./Commands/Escape";
 import Stack from '@mui/material/Grid2';
+import AuthLinks from "../components/AuthLinks"
 
 const Stats = () => {
     const [time, setTime] = useState("00:02:13:37");
@@ -25,6 +26,7 @@ const Stats = () => {
                     justifyItems: "center",
                     alignContent: "center",
                 }}>
+                <AuthLinks />
                 <Typography variant="h3">{time}</Typography>
             </Stack >
         </>
