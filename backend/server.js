@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import { connectionTracker } from "./loaders/connectionTracker.js";
 import sessionLoader from "./loaders/sessionLoader.js";
 import passportLoader from "./loaders/passportLoader.js";
+import { updateLastActivity } from "./middleware/authMiddleware.js";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ corsLoader(app);
 connectionTracker(app);
 sessionLoader(app);
 passportLoader(app);
+app.use(updateLastActivity);
 
 // Mount routes
 mountRoutes(app);

@@ -31,7 +31,7 @@ export const updateUser = async (id, { username, hashedPw, role, sessionStartTim
             role = COALESCE($3, role),
             session_start_time = COALESCE($4, session_start_time),
             last_activity_time = COALESCE($5, last_activity_time)
-        WHERE id = $7
+        WHERE id = $6
         RETURNING id, username, role, session_start_time, last_activity_time;
     `;
     const { rows } = await db.query(query, [username, hashedPw, role, sessionStartTime, lastActivityTime, id]);

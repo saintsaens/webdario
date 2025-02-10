@@ -17,6 +17,19 @@ export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
     throw new Error('Not logged in');
 });
 
+export const updateLastActivity = createAsyncThunk('user/updateLastActivity', async (userId) => {
+    const response = await fetch(`${baseUrl}/users/${userId}/activity`, {
+        method: 'PATCH',
+        credentials: 'include',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to update last activity');
+    }
+
+    return await response.json(); // Assuming backend returns updated user data
+});
+
 const userSlice = createSlice({
     name: 'user',
     initialState: {
@@ -24,7 +37,7 @@ const userSlice = createSlice({
         username: '',
         sessionStartTime: '',
         lastActivity: '',
-        timeSpent: '',
+        timeSpent: 0,
         status: 'idle',
         error: null
     },
