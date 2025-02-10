@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUser } from "../store/features/userSlice";
 import { Typography, Stack, Button } from "@mui/material";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -31,10 +30,6 @@ const handleLogout = async () => {
 export default function AuthLinks() {
     const dispatch = useDispatch();
     const { username, sessionStartTime, lastActivity, timeSpent } = useSelector((state) => state.user);
-
-    useEffect(() => {
-        dispatch(fetchUser());
-    }, [dispatch]);
 
     return (
         <Stack direction="row" spacing={2} alignItems="center">

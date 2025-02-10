@@ -3,6 +3,7 @@ import db from "../db-users/index.js";
 import passport from "passport";
 import { createGoogleCredential, getGoogleCredential } from "../services/fedCredService.js";
 import { getUserById } from "../services/usersService.js";
+import { computeTimeSpent } from "../utils/durations.js";
 
 const passportLoader = (app) => {
     app.use(passport.initialize());
@@ -30,7 +31,9 @@ const passportLoader = (app) => {
                 // User exists, fetch their info
                 const userId = credentials.user_id
                 const existingUser = await getUserById(userId);
-                console.log(existingUser.time_spent_before_current_session);
+                const startTime = existingUser.session_start_time
+                const lastActivity = existingUser.last_activity_time;
+                const timeSpent = computeTimeSpent(startTime, lastActivity);
 
                 if (!existingUser) {
                     console.log("User not found in users table.");
@@ -39,9 +42,9 @@ const passportLoader = (app) => {
                 return cb(null, { 
                     id: existingUser.id,
                     username: existingUser.username,
-                    sessionStartTime: existingUser.session_start_time,
-                    lastActivity: existingUser.last_activity_time,
-                    timeSpent: existingUser.time_spent_before_current_session,
+                    sessionStartTime: startTime,
+                    lastActivity: lastActivity,
+                    timeSpent: timeSpent,
                 });
             }
         } catch (err) {

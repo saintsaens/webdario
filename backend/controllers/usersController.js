@@ -18,20 +18,37 @@ export const createUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     const { id } = req.params;
-    const { username, password } = req.body;
+    const { username, password, role, sessionStartTime, lastActivity } = req.body;
 
-    if (!username && !password) {
-        return res.status(400).json({ error: "At least one field (username or password) must be provided" });
+    if (!username && !password && !role && !sessionStartTime && !lastActivity) {
+        return res.status(400).json({ error: "At least one field must be provided" });
     }
 
     try {
-        const updatedUser = await usersService.updateUser(id, username, password);
+        const updatedUser = await usersService.updateUser(id, { username, password, role, sessionStartTime, lastActivity });
 
         if (!updatedUser) {
             return res.status(404).json({ error: "User not found" });
         }
 
         return res.status(200).json({ message: "User updated successfully", user: updatedUser });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+export const updateUserActivity = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const updatedUser = await usersService.updateUserActivity(id);
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        return res.status(200).json({ message: "User activity updated successfully", user: updatedUser });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: "Internal server error" });
@@ -60,7 +77,7 @@ export const getUserById = async (req, res) => {
 
     try {
         const user = await usersService.getUserById(id);
-        
+
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }

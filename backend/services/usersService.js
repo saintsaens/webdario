@@ -30,6 +30,13 @@ export const updateUser = async (id, { username, password, role, sessionStartTim
     return result;
 };
 
+export const updateUserActivity = async (id) => {
+    const lastActivityTime = new Date();
+    const result = await usersRepository.updateUser(id, { lastActivityTime });
+
+    return result;
+};
+
 export const deleteUser = async (id) => {
     const result = await usersRepository.deleteUser(id);
 
