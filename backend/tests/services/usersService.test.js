@@ -57,26 +57,50 @@ describe("getUserById", () => {
 });
 
 describe("updateUser", () => {
-  it("should hash password and updates user", async () => {
-    const mockUser = { id: 1, username: "updateduser" };
+  it("should hash password and update user", async () => {
+    const mockUser = { id: 1, username: "updateduser", role: "user", session_start_time: "2025-02-10T10:00:00Z", last_activity_time: "2025-02-10T10:00:00Z" };
     bcrypt.hash.mockResolvedValueOnce("hashedPassword123");
     usersRepository.updateUser.mockResolvedValueOnce(mockUser);
-    
-    const result = await updateUser(1, "updateduser", "newpassword");
-    
+
+    const result = await updateUser(1, {
+      username: "updateduser",
+      password: "newpassword",
+      role: "user",
+      sessionStartTime: "2025-02-10T10:00:00Z",
+      lastActivityTime: "2025-02-10T10:00:00Z",
+    });
+
     expect(bcrypt.hash).toHaveBeenCalledWith("newpassword", 10);
-    expect(usersRepository.updateUser).toHaveBeenCalledWith(1, "updateduser", "hashedPassword123");
+    expect(usersRepository.updateUser).toHaveBeenCalledWith(1, {
+      username: "updateduser",
+      hashedPw: "hashedPassword123",
+      role: "user",
+      sessionStartTime: "2025-02-10T10:00:00Z",
+      lastActivityTime: "2025-02-10T10:00:00Z",
+    });
     expect(result).toEqual(mockUser);
   });
-  
-  it("should not hash password if null", async () => {
-    const mockUser = { id: 1, username: "updateduser" };
+
+  it("should not hash password if password is null", async () => {
+    const mockUser = { id: 1, username: "updateduser", role: "user", session_start_time: "2025-02-10T10:00:00Z", last_activity_time: "2025-02-10T10:00:00Z" };
     usersRepository.updateUser.mockResolvedValueOnce(mockUser);
-    
-    const result = await updateUser(1, "updateduser", null);
-    
+
+    const result = await updateUser(1, {
+      username: "updateduser",
+      password: null,
+      role: "user",
+      sessionStartTime: "2025-02-10T10:00:00Z",
+      lastActivityTime: "2025-02-10T10:00:00Z",
+    });
+
     expect(bcrypt.hash).not.toHaveBeenCalled();
-    expect(usersRepository.updateUser).toHaveBeenCalledWith(1, "updateduser", null);
+    expect(usersRepository.updateUser).toHaveBeenCalledWith(1, {
+      username: "updateduser",
+      hashedPw: null,
+      role: "user",
+      sessionStartTime: "2025-02-10T10:00:00Z",
+      lastActivityTime: "2025-02-10T10:00:00Z",
+    });
     expect(result).toEqual(mockUser);
   });
 });

@@ -20,6 +20,9 @@ export const getUserProfile = (req, res) => {
         res.json({
             id: req.user.id,
             username: req.user.username,
+            sessionStartTime: req.user.sessionStartTime,
+            lastActivity: req.user.lastActivity,
+            timeSpent: req.user.timeSpent,
         });
     } else {
         res.status(204).json({err: "Nope."});

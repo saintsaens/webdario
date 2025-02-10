@@ -30,7 +30,7 @@ const handleLogout = async () => {
 
 export default function AuthLinks() {
     const dispatch = useDispatch();
-    const { username } = useSelector((state) => state.user);
+    const { username, sessionStartTime, lastActivity, timeSpent } = useSelector((state) => state.user);
 
     useEffect(() => {
         dispatch(fetchUser());
@@ -39,12 +39,15 @@ export default function AuthLinks() {
     return (
         <Stack direction="row" spacing={2} alignItems="center">
             {username ? (
-                <>
+                <Stack>
                     <Typography variant="body1">{`Logged in as ${username}.`}</Typography>
                     <Button variant="contained" onClick={handleLogout}>
                         Logout
                     </Button>
-                </>
+                    <Typography variant="body1">{`Session start time: ${sessionStartTime}`}</Typography>
+                    <Typography variant="body1">{`Last activity: ${lastActivity}`}</Typography>
+                    <Typography variant="body1">{`Time spent: ${timeSpent}`}</Typography>
+                </Stack>
             ) : (
                 <Button variant="contained" color="primary" onClick={handleLogin}>
                     Login with Google
