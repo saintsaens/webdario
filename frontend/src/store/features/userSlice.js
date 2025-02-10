@@ -9,6 +9,9 @@ export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
         return ({
             userId: data.id,
             username: data.username,
+            sessionStartTime: data.sessionStartTime,
+            lastActivity: data.lastActivity,
+            timeSpent: data.timeSpent,
         });
     }
     throw new Error('Not logged in');
@@ -19,6 +22,9 @@ const userSlice = createSlice({
     initialState: {
         userId: '',
         username: '',
+        sessionStartTime: '',
+        lastActivity: '',
+        timeSpent: '',
         status: 'idle',
         error: null
     },
@@ -37,8 +43,11 @@ const userSlice = createSlice({
             })
             .addCase(fetchUser.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.username = action.payload.username;
                 state.userId = action.payload.userId;
+                state.username = action.payload.username;
+                state.sessionStartTime = action.payload.sessionStartTime;
+                state.lastActivity = action.payload.lastActivity;
+                state.timeSpent = action.payload.timeSpent;
             })
             .addCase(fetchUser.rejected, (state, action) => {
                 state.status = 'failed';

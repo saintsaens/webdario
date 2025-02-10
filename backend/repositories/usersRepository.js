@@ -2,19 +2,19 @@ import db from '../db-users/index.js';
 
 const tableName = `users`;
 
-export const createUser = async (username, hashedPw, role) => {
+export const createUser = async (username, hashedPw, role, sessionStartTime, lastActivityTime) => {
     const query = `
-        INSERT INTO ${tableName} (username, hashed_pw, role, session_start_time, last_activity_time, time_spent)
-        VALUES ($1, $2, $3, NOW(), NOW(), INTERVAL '0')
-        RETURNING id, username, role, session_start_time, last_activity_time, time_spent;
+        INSERT INTO ${tableName} (username, hashed_pw, role, session_start_time, last_activity_time)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING id, username, role, session_start_time, last_activity_time, time_spent_before_current_session;
     `;
-    const { rows } = await db.query(query, [username, hashedPw, role]);
+    const { rows } = await db.query(query, [username, hashedPw, role, sessionStartTime, lastActivityTime]);
     return rows[0];
 };
 
 export const getUserById = async (id) => {
     const query = `
-        SELECT id, username, role, session_start_time, last_activity_time, time_spent
+        SELECT id, username, role, session_start_time, last_activity_time, time_spent_before_current_session
         FROM ${tableName}
         WHERE id = $1;
     `;
@@ -22,19 +22,19 @@ export const getUserById = async (id) => {
     return rows[0];
 };
 
-export const updateUser = async (id, username, hashedPw, sessionStartTime, lastActivityTime, timeSpent) => {
+export const updateUser = async (id, { username, hashedPw, role, sessionStartTime, lastActivityTime }) => {
     const query = `
         UPDATE ${tableName}
-        SET 
+        SET
             username = COALESCE($1, username),
             hashed_pw = COALESCE($2, hashed_pw),
-            session_start_time = COALESCE($3, session_start_time),
-            last_activity_time = COALESCE($4, last_activity_time),
-            time_spent = COALESCE($5, time_spent)
-        WHERE id = $6
-        RETURNING id, username, role, session_start_time, last_activity_time, time_spent;
+            role = COALESCE($3, role),
+            session_start_time = COALESCE($4, session_start_time),
+            last_activity_time = COALESCE($5, last_activity_time)
+        WHERE id = $7
+        RETURNING id, username, role, session_start_time, last_activity_time;
     `;
-    const { rows } = await db.query(query, [username || null, hashedPw || null, sessionStartTime || null, lastActivityTime || null, timeSpent || null, id]);
+    const { rows } = await db.query(query, [username, hashedPw, role, sessionStartTime, lastActivityTime, id]);
     return rows[0];
 };
 
@@ -42,7 +42,7 @@ export const deleteUser = async (id) => {
     const query = `
         DELETE FROM ${tableName}
         WHERE id = $1
-        RETURNING id, username, role, session_start_time, last_activity_time, time_spent;
+        RETURNING id, username, role, session_start_time, last_activity_time, time_spent, time_spent_before_current_session;
     `;
     const { rows } = await db.query(query, [id]);
     return rows[0];

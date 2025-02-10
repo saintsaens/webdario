@@ -30,12 +30,19 @@ const passportLoader = (app) => {
                 // User exists, fetch their info
                 const userId = credentials.user_id
                 const existingUser = await getUserById(userId);
+                console.log(existingUser.time_spent_before_current_session);
 
                 if (!existingUser) {
                     console.log("User not found in users table.");
                     return cb(null, false);
                 }
-                return cb(null, { id: existingUser.id, username: existingUser.username });
+                return cb(null, { 
+                    id: existingUser.id,
+                    username: existingUser.username,
+                    sessionStartTime: existingUser.session_start_time,
+                    lastActivity: existingUser.last_activity_time,
+                    timeSpent: existingUser.time_spent_before_current_session,
+                });
             }
         } catch (err) {
             console.error("Error in Google authentication:", err);
@@ -45,7 +52,13 @@ const passportLoader = (app) => {
 
     passport.serializeUser((user, cb) => {
         process.nextTick(() => {
-            cb(null, { id: user.id, username: user.username });
+            cb(null, {
+                id: user.id,
+                username: user.username,
+                sessionStartTime: user.sessionStartTime,
+                lastActivity: user.lastActivity,
+                timeSpent: user.timeSpent,
+            });
         });
     });
 

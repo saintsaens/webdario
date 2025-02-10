@@ -9,7 +9,10 @@ export const createUser = async (username, password, role = "user") => {
     }
 
     const hashedPw = await bcrypt.hash(password, saltRounds);
-    const result = await usersRepository.createUser(username, hashedPw, role);
+    const sessionStartTime = new Date();
+    const lastActivityTime = sessionStartTime;
+
+    const result = await usersRepository.createUser(username, hashedPw, role, sessionStartTime, lastActivityTime);
 
     return result;
 };
@@ -20,9 +23,9 @@ export const getUserById = async (id) => {
     return result;
 };
 
-export const updateUser = async (id, username, password) => {
+export const updateUser = async (id, { username, password, role, sessionStartTime, lastActivityTime }) => {
     const hashedPw = password ? await bcrypt.hash(password, saltRounds) : null;
-    const result = await usersRepository.updateUser(id, username, hashedPw);
+    const result = await usersRepository.updateUser(id, { username, hashedPw, role, sessionStartTime, lastActivityTime });
 
     return result;
 };
