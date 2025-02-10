@@ -60,7 +60,7 @@ describe('User Controller Tests', () => {
             req.body = {}; // Empty request body
             await updateUser(req, res);
             expect(res.status).toHaveBeenCalledWith(400);
-            expect(res.json).toHaveBeenCalledWith({ error: 'At least one field (username or password) must be provided' });
+            expect(res.json).toHaveBeenCalledWith({ error: 'At least one field must be provided' });
         });
 
         test('should return 200 if user is successfully updated', async () => {
