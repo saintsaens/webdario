@@ -3,7 +3,6 @@ import AudioPlayer from "./AudioPlayer";
 import Avatar from "./Header/Avatar";
 import { setCurrentChannel } from "../store/features/channelSwitcherSlice";
 import { useDispatch, useSelector } from "react-redux";
-import About from "./Footer/About";
 import MuteToggler from "./Commands/MuteToggler";
 import Title from "./Body/Title";
 import ChannelSwitcher from "./Commands/ChannelSwitcher";
@@ -32,19 +31,14 @@ export default function Channel({ channelName }) {
 
     return (
         <>
-
-            <Background>
-                <AudioPlayer audioRef={audioRef} channelName={channelName} />
-            </Background>
+            <AudioPlayer audioRef={audioRef} channelName={channelName} />
 
             {!playing && (
                 <Loading />
             )}
 
             {playing && (
-                <>
-                    <MuteToggler audioRef={audioRef} channelName={channelName} />
-                </>
+                <MuteToggler audioRef={audioRef} channelName={channelName} />
             )}
         </>
     );

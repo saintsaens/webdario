@@ -5,7 +5,10 @@ import FullOverlay from "./FullOverlay";
 const Unavailable = () => {
     return (
         <FullOverlay>
-            <Typography variant="h2">
+            <Typography variant="h2"
+            sx={{
+                textAlign: "center"
+            }}>
                 Coudradio not available right now.
             </Typography>
         </FullOverlay>
