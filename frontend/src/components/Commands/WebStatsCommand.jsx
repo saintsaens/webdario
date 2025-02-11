@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import { useSelector } from "react-redux";
 
 const WebStatsCommand = () => {
   const navigate = useNavigate();
+  const { userId } = useSelector((state) => state.user);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -17,7 +19,7 @@ const WebStatsCommand = () => {
   }, [navigate]);
 
   return (
-    <Typography variant="body2">#: stats</Typography>
+    <Typography variant="body2">#: stats {userId && "🟢"}</Typography>
   );
 };
 
