@@ -4,7 +4,7 @@ import Escape from "./Commands/Escape";
 import Stack from '@mui/material/Grid2';
 import AuthLinks from "../components/AuthLinks";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUser, updateLastActivity } from "../store/features/userSlice";
+import { fetchUser, updateLastActivity, updateSessionStartTime } from "../store/features/userSlice";
 
 const Stats = () => {
     const dispatch = useDispatch();
@@ -18,11 +18,13 @@ const Stats = () => {
     useEffect(() => {
         if (userId) {
             const updateActivity = () => {
-                dispatch(updateLastActivity(userId)); // Send last activity update to backend
+                dispatch(updateLastActivity()); // Send last activity update to backend
             };
 
-            window.addEventListener("beforeunload", updateActivity);
-            return () => window.removeEventListener("beforeunload", updateActivity);
+            dispatch(updateSessionStartTime());
+            const interval = setInterval(updateActivity, 60000); // Run every 60 seconds
+
+            return () => clearInterval(interval); // Cleanup on unmount
         }
     }, [dispatch, userId]);
 

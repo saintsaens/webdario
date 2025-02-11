@@ -1,4 +1,5 @@
 import * as usersService from "../services/usersService.js";
+import { computeTimeSpent } from "../utils/durations.js";
 
 export const createUser = async (req, res) => {
     const { username, password } = req.body;
@@ -39,19 +40,73 @@ export const updateUser = async (req, res) => {
 };
 
 export const updateUserActivity = async (req, res) => {
-    const { id } = req.params;
+    if (req.isAuthenticated()) {
+        try {
+            const userId = req.user.id;
+            const sessionStartTime = req.user.sessionStartTime;
+            const lastActivityTime = new Date();
+            const newTimeSpent = computeTimeSpent(sessionStartTime, lastActivityTime);
 
-    try {
-        const updatedUser = await usersService.updateUserActivity(id);
+            // Update the session data
+            req.user.lastActivity = lastActivityTime;
+            req.user.timeSpent = newTimeSpent;
 
-        if (!updatedUser) {
-            return res.status(404).json({ error: "User not found" });
+            // Update database as well (persist the change)
+            const updatedUser = await usersService.updateUser(userId, { lastActivityTime });
+            if (!updatedUser) {
+                return res.status(404).json({ error: "User not found" });
+            }
+            return res.status(200).json({ message: "User activity updated successfully", user: updatedUser });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
         }
+    }
+    else {
+        return res.status(401).json({ err: "Not logged in" });
+    }
+};
 
-        return res.status(200).json({ message: "User activity updated successfully", user: updatedUser });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ error: "Internal server error" });
+export const updateSessionStartTime = async (req, res) => {
+    if (req.isAuthenticated()) {
+        try {
+            // Compute current time spent
+            const userId = req.user.id;
+            const sessionStartTime = req.user.sessionStartTime;
+            const lastActivityTime = new Date();
+            const timeSpent = computeTimeSpent(sessionStartTime, lastActivityTime);
+
+            // Add current time spent to bdd
+            const updatedUser = await usersService.addTimeSpent(userId, timeSpent);
+            if (!updatedUser) {
+                return res.status(404).json({ error: "User not found" });
+            }
+            
+            // Retrieve total time spent from bdd
+            const previousTimeSpent = updatedUser.previous_time_spent;
+            
+            // Update sessionStartTime
+            const newSessionStartTime = lastActivityTime;
+            
+            // Update session data
+            req.user.lastActivity = lastActivityTime;
+            req.user.sessionStartTime = newSessionStartTime;
+            req.user.timeSpent = previousTimeSpent;
+            
+            // Update database as well (persist the change)
+            const newUpdatedUser = usersService.updateUser(userId, { newSessionStartTime, lastActivityTime });
+            if (!newUpdatedUser) {
+                return res.status(404).json({ error: "User not found" });
+            }
+
+            return res.status(200).json({ message: "User activity updated successfully", user: updatedUser });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+    }
+    else {
+        return res.status(401).json({ err: "Not logged in" });
     }
 };
 
