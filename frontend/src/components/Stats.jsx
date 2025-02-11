@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Stack, Typography } from '@mui/material';
 import Escape from "./Commands/Escape";
 import AuthLinks from "../components/AuthLinks";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchUser, updateLastActivity, updateSessionStartTime } from "../store/features/userSlice";
+import { useSelector } from "react-redux";
 const Stats = () => {
-    const { timeSpent } = useSelector((state) => state.user);
+    const { userId, timeSpent } = useSelector((state) => state.user);
     const [elapsedTime, setElapsedTime] = useState(0);
 
     useEffect(() => {
@@ -40,7 +39,9 @@ const Stats = () => {
                     alignItems: "center",
                 }}>
                 <AuthLinks />
-                <Typography variant="h3">{formatTime(elapsedTime)}</Typography>
+                {userId &&
+                    <Typography variant="h3">{formatTime(elapsedTime)}</Typography>
+                }
             </Stack >
         </>
     );
