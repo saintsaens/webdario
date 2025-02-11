@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Typography, Stack, Button } from "@mui/material";
+import { Typography, Stack, Button, Link } from "@mui/material";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 const REDIRECT_URI = `${import.meta.env.VITE_BACKEND_URL}/auth/oauth2/redirect/google`;
@@ -34,19 +34,19 @@ export default function AuthLinks() {
     return (
         <Stack direction="row" spacing={2} alignItems="center">
             {username ? (
-                <Stack>
+                <Stack direction="row" spacing={2}>
                     <Typography variant="body1">{`Logged in as ${username}.`}</Typography>
-                    <Button variant="contained" onClick={handleLogout}>
-                        Logout
-                    </Button>
-                    <Typography variant="body1">{`Session start time: ${sessionStartTime}`}</Typography>
+                    <Link variant="body1" color="inherit" onClick={handleLogout} sx={{ cursor: "pointer" }}>
+                        Logout →
+                    </Link>
+                    {/* <Typography variant="body1">{`Session start time: ${sessionStartTime}`}</Typography>
                     <Typography variant="body1">{`Last activity: ${lastActivity}`}</Typography>
-                    <Typography variant="body1">{`Time spent: ${timeSpent}`}</Typography>
+                    <Typography variant="body1">{`Time spent: ${timeSpent}`}</Typography> */}
                 </Stack>
             ) : (
-                <Button variant="contained" color="primary" onClick={handleLogin}>
-                    Login with Google
-                </Button>
+                <Link variant="body1" color="inherit" onClick={handleLogin} sx={{ cursor: "pointer" }}>
+                    Login with Google →
+                </Link>
             )}
         </Stack>
     );

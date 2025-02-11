@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import Escape from "./Commands/Escape";
-import Stack from '@mui/material/Grid2';
 import AuthLinks from "../components/AuthLinks";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUser, updateLastActivity, updateSessionStartTime } from "../store/features/userSlice";
@@ -18,12 +17,10 @@ const Stats = () => {
     useEffect(() => {
         if (userId) {
             const updateActivity = () => {
-                dispatch(updateLastActivity()); // Send last activity update to backend
+                dispatch(updateLastActivity());
             };
-
             dispatch(updateSessionStartTime());
-            const interval = setInterval(updateActivity, 60000); // Run every 60 seconds
-
+            const interval = setInterval(updateActivity, 59000); // Run every 59 seconds
             return () => clearInterval(interval); // Cleanup on unmount
         }
     }, [dispatch, userId]);
@@ -53,11 +50,11 @@ const Stats = () => {
     return (
         <>
             <Escape />
-            <Stack
+            <Stack spacing={2}
                 sx={{
                     height: "100%",
-                    justifyItems: "center",
-                    alignContent: "center",
+                    justifyContent: "center",
+                    alignItems: "center",
                 }}>
                 <AuthLinks />
                 <Typography variant="h3">{formatTime(elapsedTime)}</Typography>
