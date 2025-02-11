@@ -1,17 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import AudioPlayer from "./AudioPlayer";
-import Avatar from "./Header/Avatar";
 import { setCurrentChannel } from "../store/features/channelSwitcherSlice";
 import { useDispatch, useSelector } from "react-redux";
 import MuteToggler from "./Commands/MuteToggler";
-import Title from "./Body/Title";
-import ChannelSwitcher from "./Commands/ChannelSwitcher";
 import Loading from "./Loading";
 import Unavailable from "./Unavailable";
-import Stack from "@mui/material/Stack";
-import Background from "./Background";
-import ChannelContainer from "./ChannelContainer";
-
 
 export default function Channel({ channelName }) {
     const audioRef = useRef(null);
