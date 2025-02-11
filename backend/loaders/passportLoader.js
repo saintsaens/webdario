@@ -33,7 +33,7 @@ const passportLoader = (app) => {
                 const existingUser = await getUserById(userId);
                 const startTime = existingUser.session_start_time
                 const lastActivity = existingUser.last_activity_time;
-                const timeSpent = computeTimeSpent(startTime, lastActivity);
+                const timeSpent = existingUser.time_spent;
 
                 if (!existingUser) {
                     console.log("User not found in users table.");

@@ -23,9 +23,9 @@ export const getUserById = async (id) => {
     return result;
 };
 
-export const updateUser = async (id, { username, password, role, sessionStartTime, lastActivityTime }) => {
+export const updateUser = async (id, { username, password, role, sessionStartTime, lastActivityTime, timeSpent }) => {
     const hashedPw = password ? await bcrypt.hash(password, saltRounds) : null;
-    const result = await usersRepository.updateUser(id, { username, hashedPw, role, sessionStartTime, lastActivityTime });
+    const result = await usersRepository.updateUser(id, { username, hashedPw, role, sessionStartTime, lastActivityTime, timeSpent });
 
     return result;
 };

@@ -44,15 +44,18 @@ export const updateUserActivity = async (req, res) => {
         try {
             const userId = req.user.id;
             const sessionStartTime = req.user.sessionStartTime;
+
+            // Compute new values for activity and time spent
             const lastActivityTime = new Date();
             const newTimeSpent = computeTimeSpent(sessionStartTime, lastActivityTime);
 
-            // Update the session data
+            // Update session data
             req.user.lastActivity = lastActivityTime;
-            req.user.timeSpent = newTimeSpent;
+            const totalTimeSpent = req.user.timeSpent + newTimeSpent;
+            req.user.timeSpent = totalTimeSpent;
 
             // Update database as well (persist the change)
-            const updatedUser = await usersService.updateUser(userId, { lastActivityTime });
+            const updatedUser = await usersService.updateUser(userId, { lastActivityTime, timeSpent: totalTimeSpent});
             if (!updatedUser) {
                 return res.status(404).json({ error: "User not found" });
             }
@@ -70,32 +73,19 @@ export const updateUserActivity = async (req, res) => {
 export const updateSessionStartTime = async (req, res) => {
     if (req.isAuthenticated()) {
         try {
-            // Compute current time spent
             const userId = req.user.id;
-            const sessionStartTime = req.user.sessionStartTime;
-            const lastActivityTime = new Date();
-            const timeSpent = computeTimeSpent(sessionStartTime, lastActivityTime);
 
-            // Add current time spent to bdd
-            const updatedUser = await usersService.addTimeSpent(userId, timeSpent);
-            if (!updatedUser) {
-                return res.status(404).json({ error: "User not found" });
-            }
-            
-            // Retrieve total time spent from bdd
-            const previousTimeSpent = updatedUser.previous_time_spent;
-            
-            // Update sessionStartTime
-            const newSessionStartTime = lastActivityTime;
+            // Compute new valeus for session start time and last activity
+            const lastActivityTime = new Date();
+            const sessionStartTime = lastActivityTime;
             
             // Update session data
             req.user.lastActivity = lastActivityTime;
-            req.user.sessionStartTime = newSessionStartTime;
-            req.user.timeSpent = previousTimeSpent;
+            req.user.sessionStartTime = sessionStartTime;
             
             // Update database as well (persist the change)
-            const newUpdatedUser = usersService.updateUser(userId, { newSessionStartTime, lastActivityTime });
-            if (!newUpdatedUser) {
+            const updatedUser = usersService.updateUser(userId, { sessionStartTime, lastActivityTime });
+            if (!updatedUser) {
                 return res.status(404).json({ error: "User not found" });
             }
 
