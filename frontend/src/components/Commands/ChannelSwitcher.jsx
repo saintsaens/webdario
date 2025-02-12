@@ -84,6 +84,7 @@ const ChannelSwitcher = () => {
                     bgcolor: 'var(--third-color)',
                     boxShadow: 24,
                     borderRadius: 1,
+                    pointerEvents: "none"
                 }}
             >
                 <InputBase
@@ -93,16 +94,20 @@ const ChannelSwitcher = () => {
                     fullWidth
                     autoFocus
                     sx={{
-                        padding: 2,
-                        fontSize: "1.3rem"
+                        padding: 1,
+                        fontSize: "2rem"
                     }}
                 />
-                <List disablePadding>
+                <List disablePadding
+                    sx={{
+                        paddingBottom: 0.5,
+                    }}
+                >
                     {filteredItems.map((item, index) => (
                         <ListItem key={index} disablePadding
-                            sx={{
-                                paddingBottom: 0.5,
-                            }}
+                        sx={{
+                            bgcolor: selectedIndex === index ? 'fourth.main' : 'transparent', // Change background color when selected
+                        }}
                         >
                             <ListItemButton
                                 selected={selectedIndex === index}
@@ -110,9 +115,18 @@ const ChannelSwitcher = () => {
                                     navigate(`/${item}`);
                                     dispatch(closeSwitcher());
                                 }}
+                                sx={{
+                                    padding: 1,
+                                    color: selectedIndex === index ? 'primary.main' : 'inherit', // Change text color when selected
+                                }}
                             >
                                 <ListItemText
                                     primary={item}
+                                    slotProps={{
+                                        primary: {
+                                            sx: { fontSize: "1.3rem" }
+                                        }
+                                    }}
                                 />
                             </ListItemButton>
                         </ListItem>
