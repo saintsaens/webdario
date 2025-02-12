@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Box, Modal } from "@mui/material";
 import { useSelector } from "react-redux";
-import Stats from "../Stats"; // Import the Stats component
+import Stats from "../Stats/Stats"; // Import the Stats component
 
 const WebStatsCommand = () => {
   const { userId } = useSelector((state) => state.user);
@@ -10,10 +10,12 @@ const WebStatsCommand = () => {
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "#") {
-        setOpen(true);
+        setOpen((prev) => !prev); // Toggle modal on #
+      } else if (event.key === "Escape") {
+        setOpen(false); // Always close on Escape
       }
     };
-
+  
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);

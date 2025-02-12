@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Stack, Typography } from '@mui/material';
-import Escape from "./Commands/Escape";
-import AuthLinks from "../components/AuthLinks";
+import { Typography } from '@mui/material';
+import AuthLinks from "../AuthLinks";
 import { useSelector } from "react-redux";
-const Stats = () => {
+
+const StatsBody = () => {
     const { userId, timeSpent } = useSelector((state) => state.user);
     const [elapsedTime, setElapsedTime] = useState(0);
 
@@ -31,20 +31,12 @@ const Stats = () => {
 
     return (
         <>
-            <Escape />
-            <Stack spacing={2}
-                sx={{
-                    height: "100%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}>
-                <AuthLinks />
-                {userId &&
-                    <Typography variant="h3">{formatTime(elapsedTime)}</Typography>
-                }
-            </Stack >
+            <AuthLinks />
+            {userId &&
+                <Typography variant="h3">{formatTime(elapsedTime)}</Typography>
+            }
         </>
     );
 };
 
-export default Stats;
+export default StatsBody;
