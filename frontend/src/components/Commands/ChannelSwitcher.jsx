@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setSelectedIndex } from "../../store/features/channelSwitcherSlice";
-import { Dialog, DialogContent, TextField, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import { setSelectedIndex, closeSwitcher, toggleSwitcher } from "../../store/features/channelSwitcherSlice";
+import { Modal, Box, TextField, List, ListItem, ListItemButton, ListItemText, InputBase } from "@mui/material";
 
 const ChannelSwitcher = () => {
-    const currentChannel = useSelector((state) => state.channelSwitcher.currentChannel);
-    const selectedIndex = useSelector((state) => state.channelSwitcher.selectedIndex);
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const { currentChannel, selectedIndex, isSwitcherOpen } = useSelector((state) => state.channelSwitcher);
     const [searchQuery, setSearchQuery] = useState('');
 
     const listItems = ['lofi', 'coudrier'];
@@ -28,7 +26,7 @@ const ChannelSwitcher = () => {
     const handleKeyPress = (event) => {
         const isCmdK = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k';
 
-        if (isModalVisible) {
+        if (isSwitcherOpen) {
             if (event.key === 'ArrowDown') {
                 dispatch(setSelectedIndex((selectedIndex + 1) % filteredItems.length));
             } else if (event.key === 'ArrowUp') {
@@ -37,15 +35,15 @@ const ChannelSwitcher = () => {
                 ));
             } else if (event.key === 'Enter') {
                 navigate(`/${filteredItems[selectedIndex]}`);
-                setIsModalVisible(false);
+                dispatch(closeSwitcher());
             } else if (event.key === 'Escape') {
-                setIsModalVisible(false);
+                dispatch(closeSwitcher());
                 dispatch(setSelectedIndex(0));
             }
         }
         if (isCmdK) {
             event.preventDefault();
-            setIsModalVisible((prevState) => !prevState);
+            dispatch(toggleSwitcher());
         }
     };
 
@@ -56,53 +54,86 @@ const ChannelSwitcher = () => {
     useEffect(() => {
         document.addEventListener('keydown', handleKeyPress);
 
-        if (!isModalVisible) {
+        if (!isSwitcherOpen) {
             setSearchQuery('');
         }
 
-        if (isModalVisible && searchInputRef.current) {
+        if (isSwitcherOpen && searchInputRef.current) {
             searchInputRef.current.focus();
         }
 
         return () => {
             document.removeEventListener('keydown', handleKeyPress);
         };
-    }, [isModalVisible, filteredItems]);
+    }, [isSwitcherOpen, filteredItems]);
 
     return (
-        <Dialog open={isModalVisible} onClose={() => setIsModalVisible(false)}
-            sx={{
-            }}>
-            <DialogContent
+        <Modal
+            open={isSwitcherOpen}
+            onClose={() => dispatch(closeSwitcher())}
+            disableAutoFocus
+            hideBackdrop
+        >
+            <Box
                 sx={{
-                    padding: 0,
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
                     width: 500,
+                    bgcolor: 'var(--third-color)',
+                    boxShadow: 24,
+                    borderRadius: 1,
+                    pointerEvents: "none"
                 }}
             >
-                <TextField
+                <InputBase
                     inputRef={searchInputRef}
                     value={searchQuery}
                     onChange={handleSearchChange}
                     fullWidth
                     autoFocus
                     sx={{
+                        padding: 1,
+                        fontSize: "2rem"
                     }}
                 />
-                <List>
+                <List disablePadding
+                    sx={{
+                        paddingBottom: 0.5,
+                    }}
+                >
                     {filteredItems.map((item, index) => (
-                        <ListItem key={index} disablePadding>
+                        <ListItem key={index} disablePadding
+                        sx={{
+                            bgcolor: selectedIndex === index ? 'fourth.main' : 'transparent', // Change background color when selected
+                        }}
+                        >
                             <ListItemButton
                                 selected={selectedIndex === index}
+                                onClick={() => {
+                                    navigate(`/${item}`);
+                                    dispatch(closeSwitcher());
+                                }}
+                                sx={{
+                                    padding: 1,
+                                    color: selectedIndex === index ? 'primary.main' : 'inherit', // Change text color when selected
+                                }}
                             >
-                                <ListItemText 
-                                primary={item}
+                                <ListItemText
+                                    primary={item}
+                                    slotProps={{
+                                        primary: {
+                                            sx: { fontSize: "1.3rem" }
+                                        }
+                                    }}
                                 />
                             </ListItemButton>
                         </ListItem>
                     ))}
                 </List>
-            </DialogContent>
-        </Dialog>
+            </Box>
+        </Modal>
     );
 };
 

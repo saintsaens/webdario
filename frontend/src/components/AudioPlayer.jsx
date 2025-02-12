@@ -3,6 +3,7 @@ import dashjs from "dashjs";
 import { computeStartTime } from "../utils/time.js";
 import { useDispatch, useSelector } from "react-redux";
 import { setMuted, checkStream, setPlaying } from "../store/features/audioPlayerSlice.js";
+import Background from "./Background.jsx";
 
 const AudioPlayer = ({ audioRef, channelName }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -70,9 +71,9 @@ const AudioPlayer = ({ audioRef, channelName }) => {
   }, [src, dispatch]);
 
   return (
-    <>
+    <Background>
       <video ref={audioRef} />
-    </>
+    </Background>
   );
 };
 
