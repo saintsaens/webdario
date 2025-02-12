@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import Mortagne from "../styles/allegiances/mortagne-300.png";
-import Aurimont from "../styles/allegiances/aurimont-300.png";
-import Koroso from "../styles/allegiances/koroso-300.png";
+import Mortagne from "../../styles/allegiances/mortagne-300.png";
+import Aurimont from "../../styles/allegiances/aurimont-300.png";
+import Koroso from "../../styles/allegiances/koroso-300.png";
 import Escape from "../Stats/Escape";
 import Grid from '@mui/material/Grid2';
 
