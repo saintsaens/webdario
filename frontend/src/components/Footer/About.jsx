@@ -1,16 +1,22 @@
-import React from 'react';
-import Link from '@mui/material/Link';
+import React, { useEffect } from "react";
+import { Typography } from "@mui/material";
+
+const aboutUrl = import.meta.env.VITE_ABOUT_URL;
 
 const About = () => {
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key.toLowerCase() === "a" && !event.metaKey && !event.ctrlKey) {
+        window.open(aboutUrl, "_blank", "noopener,noreferrer");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
-    <Link
-      variant="body1"
-      href="https://flavienrobert.notion.site/About-Coudradio-18086814da2780f8aa1bd29d6f9ac6b2"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      About →
-    </Link>
+    <Typography variant="body2">A: about</Typography>
   );
 };
 
