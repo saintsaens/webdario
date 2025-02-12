@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Channel from "./Channel";
 import Allegiance from "./Allegiance";
 import Pay from "./Pay";
-import Stats from "./Stats";
+import Stats from "./Stats/Stats";
 import AllegianceWelcome from "./AllegianceWelcome";
 import AllegianceRemember from "./AllegianceRemember";
 

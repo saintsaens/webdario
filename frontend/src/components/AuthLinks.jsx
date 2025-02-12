@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Typography, Stack, Button, Link } from "@mui/material";
 
@@ -31,6 +31,17 @@ export default function AuthLinks() {
     const dispatch = useDispatch();
     const { username, sessionStartTime, lastActivity, timeSpent } = useSelector((state) => state.user);
 
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (!(event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'p') {
+                handleLogin();
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, []);
+
     return (
         <Stack direction="row" spacing={2} alignItems="center">
             {username ? (
@@ -39,14 +50,11 @@ export default function AuthLinks() {
                     <Link variant="body1" color="inherit" onClick={handleLogout} sx={{ cursor: "pointer" }}>
                         Logout →
                     </Link>
-                    {/* <Typography variant="body1">{`Session start time: ${sessionStartTime}`}</Typography>
-                    <Typography variant="body1">{`Last activity: ${lastActivity}`}</Typography>
-                    <Typography variant="body1">{`Time spent: ${timeSpent}`}</Typography> */}
                 </Stack>
             ) : (
-                <Link variant="body1" color="inherit" onClick={handleLogin} sx={{ cursor: "pointer" }}>
-                    Login with Google →
-                </Link>
+                <Stack>
+                    <Typography>Pay 5€/month to see your listening time.</Typography>
+                </Stack>
             )}
         </Stack>
     );
