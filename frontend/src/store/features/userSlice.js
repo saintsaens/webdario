@@ -48,6 +48,7 @@ const userSlice = createSlice({
     initialState: {
         userId: '',
         username: '',
+        isSubscriber: false,
         sessionStartTime: '',
         lastActivity: '',
         timeSpent: 0,
