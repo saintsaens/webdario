@@ -46,9 +46,11 @@ export default function Channel({ channelName }) {
             {!playing && (
                 <Loading />
             )}
-
             {playing && (
-                <MuteToggler audioRef={audioRef} channelName={channelName} />
+                <MuteToggler
+                    audioRef={audioRef}
+                    channelName={channelName}
+                />
             )}
         </>
     );

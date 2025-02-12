@@ -12,19 +12,10 @@ export default function ChannelContainer({ channelName }) {
                 padding: 2,
             }}>
             <Grid
-                size={6}
+                size={12}
                 sx={{ height: "20%" }}
             >
                 <WebCommands />
-            </Grid>
-            <Grid
-                size={6}
-                sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    height: "20%"
-                }}
-            >
             </Grid>
             <Grid
                 size={12}
