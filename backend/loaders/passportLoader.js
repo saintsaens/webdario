@@ -1,9 +1,7 @@
 import GoogleStrategy from "passport-google-oauth20";
-import db from "../db-users/index.js";
 import passport from "passport";
 import { createGoogleCredential, getGoogleCredential } from "../services/fedCredService.js";
 import { getUserById } from "../services/usersService.js";
-import { computeTimeSpent } from "../utils/durations.js";
 
 const passportLoader = (app) => {
     app.use(passport.initialize());
