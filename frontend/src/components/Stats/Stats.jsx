@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Stack, Typography, Box } from '@mui/material';
-import AuthLinks from "../AuthLinks";
+import AuthLinks from "./AuthLinks";
 import { useSelector } from "react-redux";
 import StatsCommands from "./StatsCommands";
 import StatsBody from "./StatsBody";

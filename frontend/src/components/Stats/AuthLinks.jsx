@@ -1,9 +1,8 @@
-import React from 'react';
-import { Stack, Typography } from '@mui/material';
+import React from "react";
 import { useSelector } from "react-redux";
-import ListeningTime from "./ListeningTime";
+import { Typography, Stack } from "@mui/material";
 
-const StatsBody = () => {
+export default function AuthLinks() {
     const { username, isSubscriber } = useSelector((state) => state.user);
 
     return (
@@ -14,11 +13,6 @@ const StatsBody = () => {
             {!isSubscriber &&
                 <Typography>Subscribe for 5€/month to see your listening time.</Typography>
             }
-            {isSubscriber &&
-                <ListeningTime />
-            }
         </Stack>
     );
-};
-
-export default StatsBody;
+}
