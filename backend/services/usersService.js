@@ -4,8 +4,8 @@ import * as usersRepository from "../repositories/usersRepository.js"
 const saltRounds = 10;
 
 export const createUser = async (username, password, role = "user") => {
-    if (!username || !password) {
-        throw new Error("Username and password are required");
+    if (!username) {
+        throw new Error("Username is required");
     }
 
     const hashedPw = await bcrypt.hash(password, saltRounds);
