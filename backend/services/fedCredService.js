@@ -1,12 +1,12 @@
 import { createFederatedCredential } from "../repositories/fedCredRepository.js"
-import { createUser } from "../repositories/usersRepository.js"
+import * as usersService from "./usersService.js"
 import * as fedCredRepository from "../repositories/fedCredRepository.js"
 
 export const createGoogleCredential = async (profile, role = "user") => {
     try {
         // Create user.
         const username = profile.name.givenName;
-        const newUser = await createUser(username, null, role);
+        const newUser = await usersService.createUser(username, null, role);
         if (!newUser) {
             throw new Error("User creation failed");
         }
