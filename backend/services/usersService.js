@@ -17,6 +17,20 @@ export const createUser = async (username, password, role = "user") => {
     return result;
 };
 
+export const createUserWithoutPassword = async (username, role = "user") => {
+    if (!username) {
+        throw new Error("Username is required");
+    }
+
+    const hashedPw = null;
+    const sessionStartTime = new Date();
+    const lastActivityTime = sessionStartTime;
+
+    const result = await usersRepository.createUser(username, hashedPw, role, sessionStartTime, lastActivityTime);
+
+    return result;
+};
+
 export const getUserById = async (id) => {
     const result = await usersRepository.getUserById(id);
 
