@@ -7,8 +7,9 @@ export const createGoogleCredential = async (profile, role = "user") => {
     }
     const username = profile.name.givenName;
 
+    let newUser;
     try {
-        const newUser = await usersService.createUserWithoutPassword(username, role);
+        newUser = await usersService.createUserWithoutPassword(username, role);
         if (!newUser) {
             throw new Error(`User creation failed for ${username}`);
         }
